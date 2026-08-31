@@ -8,6 +8,8 @@ the first row of its own table, so its own staleness is somebody's job.
 |---|---|---|---|
 | (this file) | prefix allocation authority | 2026-08-31 | live |
 | `CMP-NNN` | complaints, `docs/complaints/` | 2026-08-31 | live |
+| `F-N` | candidates, `docs/candidates.md` | 2026-08-31 | live |
+| `SC-<slug>-NNN` | spec assertions (candidate F-2) | 2026-08-31 | reserved until F-2 is bought |
 
 Rules:
 
