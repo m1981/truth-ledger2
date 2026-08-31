@@ -1,9 +1,26 @@
 #!/usr/bin/env python3
-"""tl2 — the engine's CLI. Verbs: capsule, check.
+"""tl2 — the engine's CLI. Verbs: capsule, check, vacuity, whisper.
 
 tier: client (ships to installations)
-Bought by: CMP-002 (a review document went stale within an hour,
-detected by accident). Metric row: docs/governance/gate-metrics.md.
+Bought by: CMP-002 (capsule/check), CMP-006 (vacuity), CMP-011
+(whisper). Metric rows: docs/governance/gate-metrics.md.
+
+vacuity (first F-3 instance): materializes a base tree, overlays the
+working-tree test file onto it, runs the given command there, and
+classifies by the runner convention (calibrated to pytest): inner exit
+1 = PROVEN (assertion-level red on old code — the test carries
+evidence), 0 = GREEN-ON-BOTH (pass, counted, no evidence about the
+change), anything else = INCONCLUSIVE (collection/import error — never
+counted as red). Outer exit: 0 / 3 / 4 respectively.
+
+whisper (first F-8 instance): given paths about to be touched, prints
+one line per capsule watching them — context injection at the moment
+of action, wired into an agent harness's pre-edit hook. Fail-open by
+design: it never blocks, never exits nonzero on content, and stays
+silent when nothing watches. No fatigue budget yet: there is no
+priority field to budget by; the first noise complaint buys one
+(CMP-008's measured 3x-understated whisper ratio is the cautionary
+record).
 
 First F-5 instance (docs/candidates.md): an evidence capsule binds a
 sentence to the command that evidences it, the sha256 of that command's
@@ -101,6 +118,56 @@ def cmd_check(args):
     return worst
 
 
+def cmd_vacuity(args):
+    import shutil
+    import tempfile
+    scratch = tempfile.mkdtemp(prefix="tl2-vacuity-")
+    try:
+        arch = run("git archive %s | tar -x -C '%s'" % (args.base, scratch))
+        if arch.returncode != 0:
+            sys.stderr.write("tl2: cannot materialize %s:\n%s"
+                             % (args.base, arch.stderr))
+            return 2
+        dest = os.path.join(scratch, args.test)
+        os.makedirs(os.path.dirname(dest) or scratch, exist_ok=True)
+        shutil.copy2(args.test, dest)
+        inner = subprocess.run(args.run, shell=True, cwd=scratch,
+                               capture_output=True, text=True)
+        if inner.returncode == 1:
+            print("PROVEN        %s fails on %s at assertion level — "
+                  "the test carries evidence" % (args.test, args.base))
+            return 0
+        if inner.returncode == 0:
+            print("GREEN-ON-BOTH %s passes on %s — no evidence about "
+                  "the change (counted, not red)" % (args.test, args.base))
+            return 3
+        print("INCONCLUSIVE  %s on %s: runner exit %d "
+              "(collection/import error, not an assertion) — zero "
+              "evidence either way" % (args.test, args.base,
+                                       inner.returncode))
+        return 4
+    finally:
+        shutil.rmtree(scratch, ignore_errors=True)
+
+
+def cmd_whisper(args):
+    if not os.path.exists(args.store):
+        return 0
+    targets = [p.rstrip("/") for p in args.paths]
+    with open(args.store) as fh:
+        for line in fh:
+            if not line.strip():
+                continue
+            rec = json.loads(line)
+            for w in rec["watch"]:
+                w = w.rstrip("/")
+                if any(p == w or p.startswith(w + "/") for p in targets):
+                    print("whisper %s  %s  [anchored %s]"
+                          % (rec["id"], rec["sentence"], rec["anchor"][:7]))
+                    break
+    return 0
+
+
 def main():
     ap = argparse.ArgumentParser(prog="tl2")
     ap.add_argument("--store", default=STORE)
@@ -110,8 +177,17 @@ def main():
     c.add_argument("--cmd", required=True)
     c.add_argument("--watch", nargs="+", required=True)
     sub.add_parser("check", help="recompute every capsule's status")
+    v = sub.add_parser("vacuity",
+                       help="does this test fail on the pre-change tree?")
+    v.add_argument("--test", required=True)
+    v.add_argument("--run", required=True)
+    v.add_argument("--base", default="HEAD")
+    w = sub.add_parser("whisper",
+                       help="which capsules watch the paths I am about to touch")
+    w.add_argument("paths", nargs="+")
     args = ap.parse_args()
-    return cmd_capsule(args) if args.verb == "capsule" else cmd_check(args)
+    return {"capsule": cmd_capsule, "check": cmd_check,
+            "vacuity": cmd_vacuity, "whisper": cmd_whisper}[args.verb](args)
 
 
 if __name__ == "__main__":

@@ -39,6 +39,8 @@ the concrete way projects deceive themselves.
 | F-7 | Separation canary | "the dogfood leaked into the product" | engine-dev | none |
 | F-8 | Whisper (pre-edit warning) | "the rule was not in the actor's context at the moment of acting" | client | none |
 | F-9 | Agent-concurrency discipline | "two sessions, one tree, somebody's work swept into somebody else's commit" | client | none |
+| F-10 | Guard liveness | "the guard was deleted, or never had a reader, and nothing could tell" | client | none |
+| F-11 | Decision propagation | "the decision changed and nothing reached the work and sentences standing on it" | client | none |
 
 The eighth distrust — "the tool lied and we believed it" — is not a
 candidate: it is constitution C2/C3, already law for every gate. The
@@ -172,6 +174,14 @@ someone acted on it.
 command must be deterministic and its output hash-comparable, or the
 sentence is not capsule material (scope R2).
 
+**Authoring doctrine (bought as doctrine by CMP-015, not as a
+mechanism):** do not capsule sentences that pin volatile counters —
+"the gate has six detectors" dies at every intentional improvement,
+and the consumer measured five file→retract→successor cycles in one
+day for zero information. v1's own late doctrine: "stop instructing
+agents to file facts that are engineered to die." Capsule the
+*property*, not the count, wherever the property is what you mean.
+
 ## F-6 — Business criticality tiers
 
 **Transplants:** DO-178's level A–E proportionality — rigor priced by
@@ -258,6 +268,54 @@ written by two writers, attribution lost.
 **Refuses:** locking (an agent that can be blocked by a stale lock is
 worse than a merge); any central coordinator — confluence over
 coordination.
+
+## F-10 — Guard liveness
+
+**Origin: the falsifier clause working as written.** Two harvested
+events fit no row and forced this one (operator ruling, 2026-09-01):
+CMP-013 (v1's battery regression gate deleted in a cleanup; absence
+undetectable ever since) and CMP-014 (a register carried "Next review"
+dates that no instrument, hook, or human ever read in its whole life).
+v1 arrived at the same class as ADR-042, "check liveness".
+
+**Mechanics sketch.** Two mechanical checks: (a) every guard names the
+root that invokes it, and a sweep proves each guard reachable from a
+live root — a deleted or orphaned guard goes red *by its absence from
+the wiring*, not by anyone remembering it; (b) every register column
+that encodes an obligation (a review date, a probation date) names its
+reader, and a sweep fails on a reader-less column. The sweep adjudicates
+its own complement: it states what it does not cover.
+
+**Buyer class:** a guard found deleted/orphaned with nothing having
+noticed, or an obligation column found reader-less past its date —
+including this repository's own probation dates (gate-metrics.md's
+named tension is one unattended date away from being this complaint).
+
+**Refuses:** guarding prose intentions — only wired, executable guards
+and dated obligation columns are in its population.
+
+## F-11 — Decision propagation
+
+**Origin: the falsifier clause, second finding (operator ruling,
+2026-09-01).** CMP-016: a line deleted while reverting a dead design
+was silently depended on by a later change, re-opening a push-boundary
+bypass; its measured twin in v1: ADR-057 changed what `stale` means
+and two dependent claims stayed live-and-false for two weeks — "no
+mechanism runs decision → dependent claims."
+
+**Mechanics sketch.** Decisions become watchable objects: a capsule
+may watch a *decision record* (an ADR file, a ruling section) the same
+way it watches code, so changing the decision suspects everything
+standing on it; and a work item may declare the decision it stands on,
+so `check` lists work items whose premise changed. The reverse of
+F-5's tripwire: not "the evidence changed under the sentence" but "the
+premise changed under the work".
+
+**Buyer class:** a decision amended or reverted while dependent work
+or claims silently kept standing on the old version, and somebody paid.
+
+**Refuses:** semantic impact analysis (judging *how* the change
+matters is human work); this only makes the dependency visible.
 
 ## Not transplanted — priced absences
 

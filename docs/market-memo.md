@@ -43,6 +43,23 @@ programmable. Its natural sales channel is integration with agent
 harnesses (hooks), which is also where the buyers of vector 1 already
 live.
 
+## The measured order (correction of 2026-09-01)
+
+This memo originally implied F-2 → F-1 as the build order. The harvest
+of 45 anchored harm events from v1 and its consumer says otherwise:
+**F-3 dominates (14 events)** — tests, oracles and sentinels that
+proved nothing — with F-4/F-5 next, and F-6 carrying the
+best-measured single number in either repository: **555 of 630
+resolved stalings were false alarms (worse than 3:1)**, and one
+sentinel family produced 43 alarms with zero caught defects. F-1, the
+memo's "cheapest finds", has the thinnest file (2 events). The
+consumer also independently invented both the complaint register
+(question-bank + incident-to-gap ritual) and the whisper-shaped
+remedy (rule injection by SessionStart hook) — double validation of
+the product's shape by its only real user so far. Direction follows
+measurement: F-3 and F-6 lead, F-8 rides the consumer's own remedy,
+F-1 waits.
+
 ## Who pays — two vectors
 
 1. **Teams working with AI agents.** Docs↔code drift is a common,
