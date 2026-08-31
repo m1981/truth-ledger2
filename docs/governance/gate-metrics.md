@@ -15,6 +15,9 @@ seeded red AND a recorded corpus test of plausible legitimate traffic.
 
 | `scripts/tl2 retract` | client | CMP-017 | 2026-09-01 | 2026-09-01, three seeded refusals, each caught: retracting a nonexistent capsule → exit 2; naming a nonexistent successor → exit 2; retracting an already-retracted capsule → exit 2 | 2026-09-01, on a store copy: retracting the CMP-017 suspect produced a RETRACT line that does not redden check, and whisper stopped speaking for it while its successor still speaks | 0 | 0 | 2026-12-31 |
 
+| `scripts/tl2 mirror` | client | CMP-005 | 2026-09-01 | 2026-09-01, seeded fixture: a manifest id cited nowhere → GAP, a cited id absent from the manifest → ORPHAN, both red (exit 1) | 2026-09-01: matched three-id fixture → "mirror clean", exit 0 | 0 | 0 | 2026-12-31 |
+| `scripts/tl2 ready` | client | CMP-018 | 2026-09-01 | 2026-09-01, seeded fixture: one suspect capsule, one open complaint, one overdue probation, one due-soon probation — all four listed | 2026-09-01: empty fixtures → "nothing ready", exit 0. Advisory: never blocks; "red" means "lists what it must, silent when there is nothing" | 0 | 0 | 2026-12-31 |
+
 Counting rules:
 
 - A catch is a rejected message that was genuinely Polish; a false

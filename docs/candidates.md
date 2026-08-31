@@ -180,9 +180,12 @@ sentence is not capsule material (scope R2).
 never deleted — `tl2 retract` tombstones it with a cause and an
 optional successor id (v1's COPE-shaped ceremony, inherited at last);
 `check` reports it without reddening and `whisper` falls silent. The
-maintenance loop for every legitimate edit of a watched source:
-whisper before the edit, retract the outdated guard with its
-successor, file the successor at the new anchor.
+maintenance loop for every legitimate edit of a watched source, in
+mechanical order (retract validates that a named successor exists, so
+the successor comes first — the 2026-09-01 loop learned this by
+leaving four tombstones without successor links): whisper before the
+edit; after committing the edit, file the successor at the new anchor;
+then retract the outdated guard naming that successor.
 
 **Authoring doctrine (bought as doctrine by CMP-015, not as a
 mechanism):** do not capsule sentences that pin volatile counters —

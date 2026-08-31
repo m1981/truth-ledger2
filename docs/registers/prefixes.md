@@ -9,7 +9,7 @@ the first row of its own table, so its own staleness is somebody's job.
 | (this file) | prefix allocation authority | 2026-08-31 | live |
 | `CMP-NNN` | complaints, `docs/complaints/` | 2026-08-31 | live |
 | `F-N` | candidates, `docs/candidates.md` | 2026-08-31 | live |
-| `SC-<slug>-NNN` | spec assertions (candidate F-2) | 2026-08-31 | reserved until F-2 is bought |
+| `SC-<slug>-NNN` | spec assertions (F-2, `tl2 mirror`) | 2026-08-31 | live (F-2 bought 2026-09-01, CMP-005) |
 | `cap-<hex8>` | evidence capsules, `capsules.jsonl` (content-hash ids, per installation) | 2026-08-31 | live |
 | `ret-<hex8>` | capsule retraction tombstones, `capsules.jsonl` (content-hash ids, per installation) | 2026-09-01 | live |
 
