@@ -39,7 +39,16 @@ will be checked by a machine and not by your good intentions.
 skipped step is reported skipped. A claim about this repository that
 you did not verify this session is labeled as unverified.
 
-**9. Prose does not outrun truth.** Present tense is for what exists;
+**9. Falsification is staffed diversely.** One fresh session of the
+author's own model is independence of context, not of failure: this
+repository measured a same-model adversary producing fifteen findings
+and missing the three best ones, all of which came from
+differently-contexted external reviewers. A falsification round uses
+more than one reviewer with different briefs or different histories
+whenever the operator can supply them; a single fresh clone of the
+author is the floor, never the standard.
+
+**10. Prose does not outrun truth.** Present tense is for what exists;
 future tense is for what is designed. A README sentence claiming a
 capability that is not built is the exact defect class this product
 hunts, and it appeared in this repository's own first README.

@@ -34,6 +34,13 @@ Counting rules:
   and the `--no-verify` belong to the same commit.
 - `--no-verify` is an **unregistered escape**: nothing detects an
   override that was not recorded here, and this register cannot count
-  what bypasses it. v1 needed a whole waiver register for this class.
-  Until a complaint buys better, this sentence is the honest record of
-  that gap.
+  what bypasses it. v1 needed a whole waiver register for this class
+  (its shape there: overrides carry *expiring* justifications, forcing
+  re-justification). Until a complaint buys better, this sentence is
+  the honest record of that gap.
+- **A fresh clone runs no gate at all**: `core.hooksPath` is local git
+  config, set per machine by `git config core.hooksPath
+  scripts/githooks`. Nothing installs it and nothing detects its
+  absence — the first Polish commit message from a fresh clone is the
+  complaint that buys a hook-installation mechanism. Until then, this
+  sentence is the honest record of that gap.
