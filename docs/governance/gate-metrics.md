@@ -13,6 +13,8 @@ seeded red AND a recorded corpus test of plausible legitimate traffic.
 | `scripts/tl2 vacuity` | client | CMP-006 | 2026-09-01 | 2026-09-01, seeded synthetic repo: new test on buggy old tree → PROVEN (exit 0); test importing a module absent from the base → INCONCLUSIVE (exit 4), correctly not counted as red | 2026-09-01: trivial test green on both trees → GREEN-ON-BOTH (exit 3), counted, not red | 0 | 0 | 2026-12-31 |
 | `scripts/tl2 whisper` | client | CMP-011 | 2026-09-01 | 2026-09-01, speaks: names cap-45714053 on its watched file and on a directory-prefix match | 2026-09-01: silent on three non-watched paths (exit 0); fail-open on absent store (exit 0). Advisory instrument: it never blocks, so "red" here means "speaks when it must, silent when it must" | 0 | 0 | 2026-12-31 |
 
+| `scripts/tl2 retract` | client | CMP-017 | 2026-09-01 | 2026-09-01, three seeded refusals, each caught: retracting a nonexistent capsule → exit 2; naming a nonexistent successor → exit 2; retracting an already-retracted capsule → exit 2 | 2026-09-01, on a store copy: retracting the CMP-017 suspect produced a RETRACT line that does not redden check, and whisper stopped speaking for it while its successor still speaks | 0 | 0 | 2026-12-31 |
+
 Counting rules:
 
 - A catch is a rejected message that was genuinely Polish; a false

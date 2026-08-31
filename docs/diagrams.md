@@ -64,7 +64,7 @@ stateDiagram-v2
 ```mermaid
 flowchart LR
     subgraph ENGINE["ENGINE - stateless, tagged releases only"]
-        TL2["scripts/tl2<br/>verbs: capsule, check,<br/>vacuity, whisper"]
+        TL2["scripts/tl2<br/>verbs: capsule, check,<br/>vacuity, whisper, retract"]
         DEVGATES["engine-dev gates<br/>(commit-msg hook)<br/>never install"]
     end
     subgraph INST1["INSTALLATION #1 - this repo (dogfood)"]
@@ -92,6 +92,9 @@ stateDiagram-v2
     Filed --> SUSPECT: anchor unresolvable -<br/>FAIL-CLOSED (history rewrite)
     Filed --> STALE: re-run output hash differs,<br/>or evidence command now fails
     OK --> SUSPECT: next edit of a watched path
+    OK --> RETRACTED: tl2 retract - tombstone<br/>with cause + successor (CMP-017)
+    SUSPECT --> RETRACTED: the maintenance loop -<br/>retract the outdated, file the successor
+    RETRACTED --> [*]: reported by check,<br/>never reddens; whisper falls silent
     note right of SUSPECT
         named dead zones (arch. §2):
         capsule integrity unenforced;

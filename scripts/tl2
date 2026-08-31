@@ -1,9 +1,20 @@
 #!/usr/bin/env python3
-"""tl2 — the engine's CLI. Verbs: capsule, check, vacuity, whisper.
+"""tl2 — the engine's CLI. Verbs: capsule, check, vacuity, whisper,
+retract.
 
 tier: client (ships to installations)
 Bought by: CMP-002 (capsule/check), CMP-006 (vacuity), CMP-011
-(whisper). Metric rows: docs/governance/gate-metrics.md.
+(whisper), CMP-017 (retract). Metric rows:
+docs/governance/gate-metrics.md.
+
+retract (bought by CMP-017): the store is append-only, so a wrong or
+superseded capsule is never deleted — it is tombstoned by a `ret-`
+record naming the cause and (optionally) the successor capsule id,
+COPE-shaped like v1's retraction ceremony. `check` reports a retracted
+capsule as RETRACT without reddening the exit code; `whisper` stops
+speaking for it. Without this verb, every legitimate edit of a watched
+document left one permanently SUSPECT row, and a permanently red check
+trains readers to scroll past red (CMP-017).
 
 vacuity (first F-3 instance): materializes a base tree, overlays the
 working-tree test file onto it, runs the given command there, and
@@ -100,22 +111,73 @@ def check_one(rec):
     return "OK", ""
 
 
+def load_records(store):
+    if not os.path.exists(store):
+        return []
+    with open(store) as fh:
+        return [json.loads(l) for l in fh if l.strip()]
+
+
+def retraction_map(records):
+    return {r["retracts"]: r for r in records
+            if r.get("kind") == "retraction"}
+
+
 def cmd_check(args):
-    if not os.path.exists(args.store):
+    records = load_records(args.store)
+    if not records:
         print("no capsules filed (%s absent)" % args.store)
         return 0
+    retracted = retraction_map(records)
     worst = 0
-    with open(args.store) as fh:
-        for line in fh:
-            if not line.strip():
-                continue
-            rec = json.loads(line)
-            status, why = check_one(rec)
-            print("%-7s %s  %s%s" % (status, rec["id"], rec["sentence"],
-                                     ("  [" + why + "]") if why else ""))
-            if status != "OK":
-                worst = 1
+    for rec in records:
+        if rec.get("kind") == "retraction":
+            continue
+        if rec["id"] in retracted:
+            ret = retracted[rec["id"]]
+            succ = ("; successor " + ret["successor"]) if ret.get(
+                "successor") else ""
+            print("RETRACT %s  %s  [%s%s]" % (rec["id"], rec["sentence"],
+                                              ret["cause"], succ))
+            continue
+        status, why = check_one(rec)
+        print("%-7s %s  %s%s" % (status, rec["id"], rec["sentence"],
+                                 ("  [" + why + "]") if why else ""))
+        if status != "OK":
+            worst = 1
     return worst
+
+
+def cmd_retract(args):
+    records = load_records(args.store)
+    capsules = {r["id"] for r in records if "sentence" in r}
+    retracted = retraction_map(records)
+    if args.cap not in capsules:
+        sys.stderr.write("tl2: no capsule %s in %s\n"
+                         % (args.cap, args.store))
+        return 2
+    if args.cap in retracted:
+        sys.stderr.write("tl2: %s is already retracted (by %s)\n"
+                         % (args.cap, retracted[args.cap]["id"]))
+        return 2
+    if args.successor and args.successor not in capsules:
+        sys.stderr.write("tl2: successor %s is not a capsule in %s\n"
+                         % (args.successor, args.store))
+        return 2
+    rec = {
+        "kind": "retraction",
+        "retracts": args.cap,
+        "cause": args.cause,
+        "successor": args.successor,
+        "ts": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+    }
+    rec["id"] = "ret-" + sha256(json.dumps(rec, sort_keys=True))[:8]
+    with open(args.store, "a") as fh:
+        fh.write(json.dumps(rec, sort_keys=True) + "\n")
+    print("retracted %s by %s%s" % (args.cap, rec["id"],
+                                    (" -> " + args.successor)
+                                    if args.successor else ""))
+    return 0
 
 
 def cmd_vacuity(args):
@@ -151,15 +213,13 @@ def cmd_vacuity(args):
 
 
 def cmd_whisper(args):
-    if not os.path.exists(args.store):
-        return 0
+    records = load_records(args.store)
+    retracted = retraction_map(records)
     targets = [p.rstrip("/") for p in args.paths]
-    with open(args.store) as fh:
-        for line in fh:
-            if not line.strip():
-                continue
-            rec = json.loads(line)
-            for w in rec["watch"]:
+    for rec in records:
+        if rec.get("kind") == "retraction" or rec["id"] in retracted:
+            continue
+        for w in rec["watch"]:
                 w = w.rstrip("/")
                 if any(p == w or p.startswith(w + "/") for p in targets):
                     print("whisper %s  %s  [anchored %s]"
@@ -185,9 +245,15 @@ def main():
     w = sub.add_parser("whisper",
                        help="which capsules watch the paths I am about to touch")
     w.add_argument("paths", nargs="+")
+    r = sub.add_parser("retract",
+                       help="tombstone a capsule with a cause and successor")
+    r.add_argument("cap")
+    r.add_argument("--cause", required=True)
+    r.add_argument("--successor")
     args = ap.parse_args()
     return {"capsule": cmd_capsule, "check": cmd_check,
-            "vacuity": cmd_vacuity, "whisper": cmd_whisper}[args.verb](args)
+            "vacuity": cmd_vacuity, "whisper": cmd_whisper,
+            "retract": cmd_retract}[args.verb](args)
 
 
 if __name__ == "__main__":

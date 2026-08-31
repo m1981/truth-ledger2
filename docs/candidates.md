@@ -174,12 +174,13 @@ someone acted on it.
 command must be deterministic and its output hash-comparable, or the
 sentence is not capsule material (scope R2).
 
-**Known absence, named:** capsules cannot be retracted. The store is
-append-only and no verb exists to tombstone a wrong or superseded
-capsule with a cause and a successor (v1's COPE-shaped retraction was
-not inherited). Consequence, foreseen and accepted until bought: any
-edit to a watched source leaves the old capsule permanently SUSPECT,
-so `check` stays red until a retraction verb exists — see CMP-017.
+**Retraction (bought by CMP-017):** a wrong or superseded capsule is
+never deleted — `tl2 retract` tombstones it with a cause and an
+optional successor id (v1's COPE-shaped ceremony, inherited at last);
+`check` reports it without reddening and `whisper` falls silent. The
+maintenance loop for every legitimate edit of a watched source:
+whisper before the edit, retract the outdated guard with its
+successor, file the successor at the new anchor.
 
 **Authoring doctrine (bought as doctrine by CMP-015, not as a
 mechanism):** do not capsule sentences that pin volatile counters —
