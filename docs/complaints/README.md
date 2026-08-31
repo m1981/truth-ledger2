@@ -29,6 +29,9 @@ Rules:
 - A `bought` disposition is written or countersigned by the operator,
   never solely by the agent that filed the complaint or wants the
   mechanism.
+- A defective complaint is never rewritten (the body is append-only):
+  its defect is recorded by an operator ruling appended below the
+  body, and the purchase it made stands or falls by that ruling.
 - "This would obviously be useful" is not a complaint. That sentence
   built truth-ledger v1's ballast — and at this repository's first
   founding it smuggled an unwitnessed second detector into the first
