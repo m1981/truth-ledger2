@@ -24,6 +24,11 @@ Rules:
 - Whose harm qualifies: anyone's. A harm event from a client or pilot
   engagement is a first-class complaint, filed the same way — this is
   the only door market demand has into this repository.
+- A dated, anchored harm event from another repository's history
+  qualifies; an undated "lesson" does not. That difference — event
+  with evidence versus interpretation on appeal — is the difference
+  between this register and the closed founding currency
+  (constitution, "The founding exception is closed").
 - One complaint can buy at most one mechanism; a mechanism wanting a
   broader mandate needs more complaints, not a broader reading.
 - A `bought` disposition is written or countersigned by the operator,
