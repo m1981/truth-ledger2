@@ -15,11 +15,10 @@ five refusals that define the product; they are the product.
 
 An **engine** (stateless verifier code) and its **installations** (a
 copy of the tools plus local state, living inside the repository it
-verifies). This repository **will dogfood** the engine through its own
-installation, using exactly the public surface a client installation
-gets — no private doors. Today no installation exists: the only built
-mechanism is engine-dev tier, and this sentence is the honest record of
-that distance.
+verifies). This repository is installation #1: since CMP-002 bought
+`scripts/tl2` (the first client-tier mechanism), it dogfoods the engine
+through the same public surface a client installation gets — no private
+doors. The installation's state is `capsules.jsonl`.
 
 ## Current state
 

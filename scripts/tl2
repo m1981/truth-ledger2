@@ -1,0 +1,118 @@
+#!/usr/bin/env python3
+"""tl2 — the engine's CLI. Verbs: capsule, check.
+
+tier: client (ships to installations)
+Bought by: CMP-002 (a review document went stale within an hour,
+detected by accident). Metric row: docs/governance/gate-metrics.md.
+
+First F-5 instance (docs/candidates.md): an evidence capsule binds a
+sentence to the command that evidences it, the sha256 of that command's
+output, the commit anchor, and the watched paths. `check` recomputes
+everything at read time (architecture §2): an unresolvable anchor is
+SUSPECT (fail-closed), a watched path changed since the anchor —
+committed or not — is SUSPECT, a re-run whose output hash differs is
+STALE, otherwise OK. Nothing but the capsule records is stored.
+
+Determinism of the capsuled command and adequacy of the watched set are
+the author's responsibility (architecture §2, mode 3). Python stdlib
+only; reads nothing outside the repository it runs in.
+"""
+import argparse
+import hashlib
+import json
+import os
+import subprocess
+import sys
+from datetime import datetime, timezone
+
+STORE = "capsules.jsonl"
+
+
+def run(cmd):
+    return subprocess.run(cmd, shell=True, capture_output=True, text=True)
+
+
+def git(args):
+    return run("git " + args)
+
+
+def sha256(text):
+    return hashlib.sha256(text.encode()).hexdigest()
+
+
+def cmd_capsule(args):
+    result = run(args.cmd)
+    if result.returncode != 0:
+        sys.stderr.write("tl2: evidence command failed (rc=%d); a capsule "
+                         "records evidence, not an error:\n%s"
+                         % (result.returncode, result.stderr))
+        return 2
+    anchor = git("rev-parse HEAD").stdout.strip()
+    record = {
+        "sentence": args.sentence,
+        "cmd": args.cmd,
+        "output_sha256": sha256(result.stdout),
+        "anchor": anchor,
+        "watch": args.watch,
+        "ts": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+    }
+    record["id"] = "cap-" + sha256(json.dumps(record, sort_keys=True))[:8]
+    with open(args.store, "a") as fh:
+        fh.write(json.dumps(record, sort_keys=True) + "\n")
+    print("filed %s anchored %s" % (record["id"], anchor[:7]))
+    return 0
+
+
+def check_one(rec):
+    anchor = rec["anchor"]
+    if git("cat-file -e %s^{commit}" % anchor).returncode != 0:
+        return "SUSPECT", "anchor %s unresolvable (fail-closed)" % anchor[:7]
+    paths = " ".join("'%s'" % p for p in rec["watch"])
+    committed = git("diff --name-only %s..HEAD -- %s" % (anchor, paths))
+    dirty = git("status --porcelain -- %s" % paths)
+    changed = (committed.stdout.strip() + "\n" + dirty.stdout.strip()).strip()
+    if changed:
+        return "SUSPECT", "watched path changed since %s: %s" % (
+            anchor[:7], " ".join(sorted(set(
+                line.split()[-1] for line in changed.splitlines()))))
+    result = run(rec["cmd"])
+    if result.returncode != 0:
+        return "STALE", "evidence command now fails (rc=%d)" % result.returncode
+    if sha256(result.stdout) != rec["output_sha256"]:
+        return "STALE", "output hash differs on re-run"
+    return "OK", ""
+
+
+def cmd_check(args):
+    if not os.path.exists(args.store):
+        print("no capsules filed (%s absent)" % args.store)
+        return 0
+    worst = 0
+    with open(args.store) as fh:
+        for line in fh:
+            if not line.strip():
+                continue
+            rec = json.loads(line)
+            status, why = check_one(rec)
+            print("%-7s %s  %s%s" % (status, rec["id"], rec["sentence"],
+                                     ("  [" + why + "]") if why else ""))
+            if status != "OK":
+                worst = 1
+    return worst
+
+
+def main():
+    ap = argparse.ArgumentParser(prog="tl2")
+    ap.add_argument("--store", default=STORE)
+    sub = ap.add_subparsers(dest="verb", required=True)
+    c = sub.add_parser("capsule", help="file an evidence capsule")
+    c.add_argument("sentence")
+    c.add_argument("--cmd", required=True)
+    c.add_argument("--watch", nargs="+", required=True)
+    sub.add_parser("check", help="recompute every capsule's status")
+    args = ap.parse_args()
+    return cmd_capsule(args) if args.verb == "capsule" else cmd_check(args)
+
+
+if __name__ == "__main__":
+    sys.exit(main())

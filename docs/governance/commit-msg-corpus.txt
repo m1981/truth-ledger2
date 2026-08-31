@@ -1,0 +1,10 @@
+fix jest config for the client tier
+migrate to jest 30
+add jest snapshot tests
+Update dependencies and lockfile
+Refactor user session handling
+Add the separation canary and its metric row
+fix: handle null pointer in checkout flow
+docs: clarify API rate limits
+Revert "temporary workaround for CI cache"
+chore: bump python to 3.12

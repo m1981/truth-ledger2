@@ -23,10 +23,10 @@ system is installation state (scope R5). Two installations share
 nothing and can never collide: each receives its own identifier prefix
 from `docs/registers/prefixes.md` at initialization (constitution C5).
 
-This repository will carry one installation of its own, one of many and
-with no privilege: it will reach the engine only through the public
-surface every client installation gets (constitution C4). No
-installation exists today.
+This repository carries one installation of its own (since CMP-002
+bought the first client-tier mechanism), one of many and with no
+privilege: it reaches the engine only through the public surface every
+client installation gets (constitution C4).
 
 ## 2. State model: recompute over record
 
@@ -79,9 +79,10 @@ no network — the no-network property holds for the engine's own code,
 not for what an author capsules. The engine-dev tier may carry
 development dependencies; they never install.
 
-The exact CLI name and verb set are decided when the first client-tier
-mechanism is bought — naming an unbuilt surface is how v1 grew
-documentation ahead of truth.
+The CLI is `scripts/tl2`; its verb set grows only with purchases —
+first two verbs: `capsule` and `check` (CMP-002). The name was decided
+at the first client-tier purchase, not before: naming an unbuilt
+surface is how v1 grew documentation ahead of truth.
 
 ## 4. Gate tiers and the separation proof
 

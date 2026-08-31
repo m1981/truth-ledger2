@@ -133,6 +133,17 @@ report discipline is enforceable only for artifacts that carry it —
 architecture §6's honesty block applies verbatim, and the buyer is told
 so in the product, not in a footnote.
 
+**R2 bridge (to be ruled at purchase, not before).** Scope R2 says a
+judgment-shaped check "does not enter the engine" — not merely "does
+not gate" — and F-4 is LLM-driven and ships at client tier. The bridge:
+F-4 is not a *check* under R2, because it computes no status and blocks
+nothing; it produces a proposal artifact a human disposes of
+(architecture §6). If the operator reads R2 stricter at purchase time,
+F-4 retiers to engine-dev or only its report format survives. The
+reconciliation is declared here, not achieved — exactly like F-1's
+scope bridge, it is a ruling item, and buying F-4 without ruling on it
+is invalid.
+
 **Buyer class:** an author-verified claim later proven false — the
 author's own confirmation was the failing control.
 
