@@ -21,6 +21,9 @@ Rules:
 
 - A complaint is append-only: its disposition line changes, its body
   does not.
+- Whose harm qualifies: anyone's. A harm event from a client or pilot
+  engagement is a first-class complaint, filed the same way — this is
+  the only door market demand has into this repository.
 - One complaint can buy at most one mechanism; a mechanism wanting a
   broader mandate needs more complaints, not a broader reading.
 - A `bought` disposition is written or countersigned by the operator,

@@ -1,0 +1,64 @@
+# Market memo — why anyone would pay for this
+
+Status: **NON-NORMATIVE.** This memo steers the operator's attention;
+it never justifies a purchase. A mechanism enters only through a filed
+complaint (constitution C1) — citing this memo buys nothing, and a
+disposition that leans on it instead of on a harm event is invalid.
+It is the third genre in this repository: scope and constitution are
+law, candidates are reasoning, this is direction. Direction can be
+wrong without anything being broken; revise it by operator ruling,
+dated.
+
+## The selection principle, in one sentence
+
+Ship only checks that are mechanical and deterministic, cheap to
+recompute from zero, and quiet on legitimate traffic — everything
+judgment-shaped or expensive stays with humans or is refused (this is
+scope R2 + constitution C2/C3 read as one sentence; it came from the
+measured IV&V verdict on v1: *the mechanical part is stronger than the
+independent-agent part*).
+
+## Position: what is actually new here
+
+Almost every mechanism in this system has a 15–70 year pedigree
+(in-toto/SLSA provenance, DOORS suspect links, fault seeding, event
+sourcing, alarm rationalization). The pedigree analysis of v1
+identified exactly one genuinely new thing: **suspect-links over
+sentences produced by LLM agents** — candidate F-5's territory. Nobody
+applied configuration-audit discipline to *what a model claims about a
+repository*. In the era of agent-written code, the failure mode "a
+confident, stale assertion with no record of how it was produced" only
+grows. F-5 is the market position; everything else is the credible
+apparatus around it.
+
+**The backbone** is candidate F-2 (bidirectional traceability): the
+cheapest to build, proven shape, and the thing a buyer can understand
+in one demo. F-5 differentiates; F-2 carries.
+
+## Who pays — two vectors
+
+1. **Teams working with AI agents.** Docs↔code drift is a common,
+   named pain today; verification of what agents assert and leave in
+   documentation hits it directly. Their harm events are the natural
+   source of early complaints.
+2. **Compliance** (SOC 2, ISO 27001, GDPR audits) — the business-world
+   analog of airworthiness certification: the company must *show
+   evidence* that controls work. Audit-ready evidence — capsules with
+   command, hash, and commit anchor, reproducible on an auditor's
+   demand — replaces what is today assembled by hand in pre-audit
+   panic. This is the vector with money already allocated to the
+   problem.
+
+## The sales boundary
+
+The declared ceiling (scope) is also the honest limit of every pitch:
+this apparatus checks that **records still correspond** — it will never
+say the work was good, the product right, or the process followed.
+A sale that promises more sells something this system refuses to be.
+
+## Bridge to reality
+
+A harm event from a client or pilot engagement is a first-class
+complaint (complaints register). That is the only door market demand
+has into this repository — and it is the same door everything else
+uses.

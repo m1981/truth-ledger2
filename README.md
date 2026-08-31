@@ -39,6 +39,7 @@ through complaints (constitution C1).
    each priced by a named failure)
 3. `docs/architecture.md` — engine, installations, the LLM rule
 4. `docs/candidates.md` — designed candidates, none of them promises
-5. `docs/registers/prefixes.md` — identifier allocation
-6. `docs/complaints/README.md` — the door mechanisms enter through
-7. `AGENTS.md` — conduct for agents working here
+5. `docs/market-memo.md` — why anyone would pay (non-normative)
+6. `docs/registers/prefixes.md` — identifier allocation
+7. `docs/complaints/README.md` — the door mechanisms enter through
+8. `AGENTS.md` — conduct for agents working here

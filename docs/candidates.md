@@ -189,3 +189,25 @@ Runs engine-dev-side on release tagging.
 
 **Buyer class:** an installation observed reading outside its
 repository, or a client artifact found depending on an engine-dev file.
+
+## Not transplanted — priced absences
+
+Deliberate refusals of DO-178-shaped machinery, each with its reason,
+so a future reader knows they were weighed and declined rather than
+forgotten (this section was lost once, in the first→second founding
+rewrite, and restored by operator ruling of 2026-08-31):
+
+- **Structural coverage / MC/DC** — a red-ocean tool category
+  (coverage.py, commercial analyzers). Their *reports* may enter F-5
+  capsules as evidence; rebuilding them is refused (scope R3).
+- **Full DO-330 tool qualification** — constitution C2's two witnesses
+  buy the premise (never trust an unchecked checker) at a price a
+  business tool can carry; the full qualification regime has no buyer
+  here.
+- **Three requirement levels (system/HLR/LLR)** — business software
+  carries two usefully: the spec sentence and its `SC-` assertions. A
+  third level is ceremony at this weight.
+- **SOI audits** — there is no certification authority; its role is
+  played by C3 probation (gates die by their own record) and the
+  operator's rulings.
+- **Validation and process assurance** — scope R1 and R4.
