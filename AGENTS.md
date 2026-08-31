@@ -35,9 +35,24 @@ English. This rule was broken by its own author within minutes of being
 written (CMP-001); the gate that resulted is why your commit message
 will be checked by a machine and not by your good intentions.
 
-**8. Report faithfully.** A red check is reported red, with output. A
-skipped step is reported skipped. A claim about this repository that
-you did not verify this session is labeled as unverified.
+**8. Report faithfully, with certainty labels.** A red check is
+reported red, with output. A skipped step is reported skipped. Every
+load-bearing sentence you write — in a document, a purchase record, a
+report — carries one of three certainty classes, with an anchor:
+
+- `[S]` **standard** — a claim of an established discipline, source
+  named.
+- `[M]` **measured** — derived from a measurement, number and anchor
+  (commit, file:line, record id) given.
+- `[I]` **interpretation** — your generalization with no falsifier; a
+  motif, not a finding.
+
+The class an unlabeled sentence gets by default is `[I]`, and an `[I]`
+posing as `[M]` is this repository's founding numeric defect: the
+constitution's "day ~200" was another agent's rhetoric transplanted as
+a measurement, false by 4x within a day (CMP-003). The label is the
+cheap guard against the harvest's second-largest harm class (F-4:
+the author's sentence was false).
 
 **9. Falsification is staffed diversely.** One fresh session of the
 author's own model is independence of context, not of failure: this
