@@ -74,6 +74,37 @@ F-1 waits.
    panic. This is the vector with money already allocated to the
    problem.
 
+## The operating model — operator, agents, a subscription
+
+`[I]` unless marked. Three parties: an **operator** who rules,
+countersigns and pays; **agents** who do everything reversible and die
+with their sessions; a **subscription** — fixed monthly capacity, not
+per-task billing. What this implies:
+
+- **Motivation does not live in the agent** (it has no memory, no
+  stake, no continuity). The project's motivation is structural:
+  **pain** (the complaint register), **direction** (this memo),
+  **rulings** (the operator), and a **queue** (candidate F-12) that
+  answers "what is ready" between the operator's turns.
+- **Instead of a plan: direction plus queue.** A ratified plan is an
+  attractor that agents execute literally after reality has invalidated
+  it — this repository's first founding measured exactly that and
+  replaced its plan with a never-ratified catalog.
+- **The operator is the scarcest resource.** Rulings are batched with
+  evidence and a recommendation (AGENTS.md rule 11); nothing waits on
+  the operator that is not genuinely theirs. `[M]` v1 carried
+  "human-only" items that hung for weeks.
+- **Rulingless windows are work.** The subscription flows when nobody
+  is issuing commands; those windows belong to harvests, sweeps, and
+  capsule maintenance — never to new mechanisms (C1 still holds).
+- **The sensorium, as vocabulary:** correspondence (`check`), touch
+  (`whisper` — "you are about to touch this"), proprioception
+  (gate-metrics and F-10 — feeling one's own organs), and two senses
+  known to be missing: time and the external world (architecture §2
+  mode 3), and budget (candidate F-13). `[M]` for the cost of the
+  missing budget sense: 555 of 630 stalings were false alarms, and
+  half a supervisor's effort once went to ledger bookkeeping.
+
 ## The sales boundary
 
 The declared ceiling (scope) is also the honest limit of every pitch:

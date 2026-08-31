@@ -41,6 +41,8 @@ the concrete way projects deceive themselves.
 | F-9 | Agent-concurrency discipline | "two sessions, one tree, somebody's work swept into somebody else's commit" | client | none |
 | F-10 | Guard liveness | "the guard was deleted, or never had a reader, and nothing could tell" | client | none |
 | F-11 | Decision propagation | "the decision changed and nothing reached the work and sentences standing on it" | client | none |
+| F-12 | Work queue | "an operator turn was spent asking what now; finished work hid blocked work" | client | none |
+| F-13 | Budget sense | "ceremony ate the subscription and nothing was counting" | client | none |
 
 The eighth distrust — "the tool lied and we believed it" — is not a
 candidate: it is constitution C2/C3, already law for every gate. The
@@ -324,6 +326,48 @@ or claims silently kept standing on the old version, and somebody paid.
 
 **Refuses:** semantic impact analysis (judging *how* the change
 matters is human work); this only makes the dependency visible.
+
+## F-12 — Work queue
+
+**Origin: operator ruling, 2026-09-01** (the agentic-environment
+taxonomy; precedent for ruling-added rows: F-8/F-9). Anchored evidence
+already in the register: CMP-011's cost line — "kuchnie-lm8, the P1
+lead-fidelity item, sat blocked by finished work and was absent from
+`truth ready`."
+
+**Mechanics sketch.** A ready list that is **derived, never
+hand-maintained** (v1's roster lesson: a hand-kept reading order was
+the one artifact nobody could see rot): computed at read time from
+open complaints, probation dates coming due, SUSPECT capsules, and
+promoted-but-unbought harvest events — each row naming what acting on
+it would buy and roughly what it costs. A `tl2 ready` verb, someday.
+
+**Buyer class:** an operator turn spent asking "what now", or work
+found blocked invisibly behind finished work.
+
+**Refuses:** being a plan. The queue orders what exists; priorities
+stay with the memo and the operator; it never invents work.
+
+## F-13 — Budget sense
+
+**Origin: operator ruling, 2026-09-01** (same taxonomy). Anchored
+evidence: 555 of 630 resolved stalings were false alarms (consumer,
+tr-e1225a78); "half the supervisor's effort went to ledger
+bookkeeping" (supervision retro 2026-07-16); ceremony costing a
+multiple of the fix (v1's own IV&V verdict).
+
+**Mechanics sketch.** Cost as a column: each mechanism's row counts
+not only catches, false alarms and misses (C3) but the **agent turns
+and operator rulings it consumed** — recorded at the events that
+consume them, like everything else in gate-metrics. A monthly
+ceremony-versus-product line makes the subscription's fate readable.
+
+**Buyer class:** a month in which ceremony visibly ate the
+subscription instead of the product, or a gate whose upkeep costs more
+than its catches are worth.
+
+**Refuses:** tracking humans' time — only countable repository events
+(turns, rulings, verdict actions) enter the ledger.
 
 ## Not transplanted — priced absences
 

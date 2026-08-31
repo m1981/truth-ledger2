@@ -20,7 +20,7 @@ flowchart TB
         CONST["docs/governance/constitution.md<br/>6 entry rules C1-C6, priced"]
     end
     subgraph REASONING["REASONING - never ratified"]
-        CAND["docs/candidates.md<br/>F-1..F-11 + falsifier clause"]
+        CAND["docs/candidates.md<br/>F-1..F-13 + falsifier clause"]
     end
     subgraph DIRECTION["DIRECTION - non-normative"]
         MEMO["docs/market-memo.md<br/>who pays, measured order"]
@@ -123,6 +123,8 @@ flowchart LR
         D9["two sessions, one tree"]
         D10["the guard itself died unseen"]
         D11["the decision changed, nothing followed"]
+        D12["nobody could say what was ready"]
+        D13["ceremony ate the subscription"]
     end
     D1 --> F1["F-1 spec lint<br/>evidence: 2"]
     D2 --> F2["F-2 traceability mirror<br/>evidence: 5"]
@@ -135,5 +137,7 @@ flowchart LR
     D9 --> F9["F-9 concurrency discipline<br/>evidence: 3"]
     D10 --> F10["F-10 guard liveness<br/>born of CMP-013/014"]
     D11 --> F11["F-11 decision propagation<br/>born of CMP-016"]
+    D12 --> F12["F-12 work queue<br/>evidence: CMP-011's cost line"]
+    D13 --> F13["F-13 budget sense<br/>evidence: 555/630 false stalings"]
     LAW2["the lying tool - constitution C2/C3,<br/>law, not a candidate"]
 ```

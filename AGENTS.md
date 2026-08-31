@@ -63,7 +63,15 @@ more than one reviewer with different briefs or different histories
 whenever the operator can supply them; a single fresh clone of the
 author is the floor, never the standard.
 
-**10. Prose does not outrun truth.** Present tense is for what exists;
+**10. Decisions are batched.** Rulings go to the operator in packages
+— each item with its evidence and a recommendation — never as a drip
+of single questions. Everything reversible proceeds without waiting;
+only what is genuinely the operator's (rulings, countersigns,
+boundaries) waits at all. The operator is the scarcest resource in
+this environment, and v1 measured the anti-pattern: "human-only"
+queue items hanging for weeks while agents idled around them.
+
+**11. Prose does not outrun truth.** Present tense is for what exists;
 future tense is for what is designed. A README sentence claiming a
 capability that is not built is the exact defect class this product
 hunts, and it appeared in this repository's own first README.
