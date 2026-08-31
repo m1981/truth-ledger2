@@ -37,6 +37,8 @@ the concrete way projects deceive themselves.
 | F-5 | Evidence capsules + suspect projection | "what shipped is not what was checked" | client | none |
 | F-6 | Business criticality tiers | "uniform rigor is fake rigor" | client | proposer |
 | F-7 | Separation canary | "the dogfood leaked into the product" | engine-dev | none |
+| F-8 | Whisper (pre-edit warning) | "the rule was not in the actor's context at the moment of acting" | client | none |
+| F-9 | Agent-concurrency discipline | "two sessions, one tree, somebody's work swept into somebody else's commit" | client | none |
 
 The eighth distrust — "the tool lied and we believed it" — is not a
 candidate: it is constitution C2/C3, already law for every gate. The
@@ -200,6 +202,62 @@ Runs engine-dev-side on release tagging.
 
 **Buyer class:** an installation observed reading outside its
 repository, or a client artifact found depending on an engine-dev file.
+
+## F-8 — Whisper (pre-edit warning)
+
+**Transplants:** nothing from any standard — this is v1's own invention.
+DOORS-style suspect links report *after the fact* to a human reading a
+report; whisper injects "these sentences watch the file you are about
+to touch" **into the actor's context at the moment of action**. No
+standard conceives it, because no standard ever had an actor whose
+attention is programmable. It is also the direct remedy for CMP-001's
+root cause: a prose rule does not bind an agent that is not re-reading
+it at the moment of acting — whisper makes the moment of acting carry
+the rule.
+
+**Mechanics sketch.** A pre-edit hook (agent-harness integration —
+e.g. Claude Code hooks — or an editor/CI shim): before an edit touches
+path P, answer "which capsules watch P" from `capsules.jsonl` (a cheap
+read-time projection, like `check`). Two phases with opposite
+polarities, inherited from v1's measured design: **deny** (declared
+frozen paths, fail-closed) and **whisper** (fail-open, fatigue-budgeted:
+high-priority capsules full voice, the rest one line). The fatigue
+budget is not optional — v1 measured that an unbudgeted whisper is
+alarm fatigue with extra steps.
+
+**Buyer class:** an agent edited a watched path, the capsule went
+SUSPECT, and nobody noticed until a later `check` — or a path that
+should have been frozen was edited outright.
+
+**Refuses:** blocking edits on judgment (deny is path-list mechanical);
+whispering to humans as a nag channel — this is context injection for
+agents, not a notification system.
+
+## F-9 — Agent-concurrency discipline
+
+**Transplants:** nothing — DO-178's configuration management assumes a
+single change stream governed by humans. v1 measured what standards
+never met: multiple model sessions working one tree concurrently.
+Its incidents are the design input: a pathless `git add` swept three
+sessions' hunks into one commit under one author; documents landed
+without their code; a session's whole contribution entered history
+under other sessions' names.
+
+**Mechanics sketch.** Three mechanical parts, separable purchases:
+single-writer rule per store (a store names its writing session while
+open); append-only stores with content-hash ids so branch work merges
+by union (already true of `capsules.jsonl` by construction); a
+pre-commit guard that warns when staged hunks touch paths another live
+session has declared open. Session attribution as a record field, so
+history keeps who-did-what without archaeology.
+
+**Buyer class:** the first harm from two sessions working this tree
+concurrently — work swept into another session's commit, a store
+written by two writers, attribution lost.
+
+**Refuses:** locking (an agent that can be blocked by a stale lock is
+worse than a merge); any central coordinator — confluence over
+coordination.
 
 ## Not transplanted — priced absences
 

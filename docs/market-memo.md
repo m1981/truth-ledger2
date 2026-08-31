@@ -35,6 +35,14 @@ apparatus around it.
 cheapest to build, proven shape, and the thing a buyer can understand
 in one demo. F-5 differentiates; F-2 carries.
 
+**The second differentiator** is candidate F-8 (whisper): pushing
+"these sentences watch the file you are about to touch" into the
+agent's context at the moment of action — a mechanism no standard
+conceives, because standards never had an actor whose attention is
+programmable. Its natural sales channel is integration with agent
+harnesses (hooks), which is also where the buyers of vector 1 already
+live.
+
 ## Who pays — two vectors
 
 1. **Teams working with AI agents.** Docs↔code drift is a common,

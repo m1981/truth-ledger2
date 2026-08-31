@@ -15,6 +15,11 @@ Counting rules:
 - A catch is a rejected message that was genuinely Polish; a false
   alarm is a rejected message that was not. Both are one-line edits to
   this table, made in the same session that saw the event.
+- **Misses are counted too**: a defect a gate exists to catch that got
+  past it is recorded in that gate's row, in the session that saw it.
+  A metrics table without misses inflates every gate — v1's most honest
+  number (its 1.5% verification hit rate) existed only because
+  recording misses was mandatory.
 - Probation dates are swept by people, not hope: **any session that
   edits a gate or this file checks every probation date first** and
   retires what its record has already killed. Named tension: this is a

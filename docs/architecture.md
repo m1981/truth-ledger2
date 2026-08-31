@@ -66,6 +66,12 @@ discovers them as surprises:
    capsule's author; a sentence invalidated by a file *outside* its
    watched set is never marked suspect, by design. Adequacy of the set
    is the author's responsibility and is not verified by the engine.
+   The extreme case is time itself: a sentence can be invalidated by
+   nothing in the repository — an external dependency moved, the world
+   drifted — and no watched set can see that. v1 carried read-time TTL
+   for exactly this channel and also measured its cost (inert expiry
+   records, ceremony); v2 declines it until a complaint buys it, and
+   until then this sentence is the honest record of that channel.
 
 ## 3. Public surface
 
