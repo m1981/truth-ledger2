@@ -1,0 +1,24 @@
+#!/bin/sh
+# commit-msg — reject commit messages written in Polish.
+# tier: engine-dev (polices this repository's own commits; never installs)
+# Bought by: CMP-001. Metric row: docs/governance/gate-metrics.md.
+#
+# One detector, on purpose (scope R2, constitution C2/C3): Polish
+# diacritics. Diacritic-free Polish passes — a narrow gate that is
+# right beats a wide one that cries wolf. The first founding shipped a
+# second, word-list detector that CMP-001 never bought and no seeded
+# fault ever witnessed; external review measured it blocking three
+# honest English messages about the Jest framework. If diacritic-free
+# Polish ever lands in the log, that commit is a complaint (CMP-)
+# and buys the second detector properly — with a corpus test.
+
+MSG_FILE="$1"
+BODY=$(grep -v '^#' "$MSG_FILE")
+
+if printf '%s' "$BODY" | grep -q '[ąćęłńóśźżĄĆĘŁŃÓŚŹŻ]'; then
+    echo "commit-msg: Polish diacritics in commit message (AGENTS.md rule 7: English only)." >&2
+    echo "commit-msg: false alarm? FIRST record it in docs/governance/gate-metrics.md, THEN retry with --no-verify." >&2
+    exit 1
+fi
+
+exit 0
