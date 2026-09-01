@@ -12,11 +12,24 @@
 # Polish ever lands in the log, that commit is a complaint (CMP-)
 # and buys the second detector properly — with a corpus test.
 
+# Narrowed 2026-09-01 by operator ruling (b) on the cap-45714053
+# battle verification: red only when TWO OR MORE words carry
+# diacritics. Measured basis: six of eight legitimate English messages
+# naming Polish people, places, or the characters themselves were
+# blocked by the any-occurrence rule; the narrowing frees the
+# single-proper-noun and single-character cases ("Michał Nowak",
+# "Normalize ó to o") at the cost of missing single-diacritic-word
+# Polish ("Zmieniono wersję") — the narrow-gate tradeoff again, and
+# the first such miss in the log is the complaint that buys the
+# refinement. Residual accepted false alarms: >=2 diacritic words in
+# legitimate English ("Łódź and Kraków") — recorded in gate-metrics.
+
 MSG_FILE="$1"
 BODY=$(grep -v '^#' "$MSG_FILE")
 
-if printf '%s' "$BODY" | grep -q '[ąćęłńóśźżĄĆĘŁŃÓŚŹŻ]'; then
-    echo "commit-msg: Polish diacritics in commit message (AGENTS.md rule 7: English only)." >&2
+DIA_WORDS=$(printf '%s' "$BODY" | tr -s '[:space:]' '\n' | grep -c '[ąćęłńóśźżĄĆĘŁŃÓŚŹŻ]')
+if [ "$DIA_WORDS" -ge 2 ]; then
+    echo "commit-msg: $DIA_WORDS words with Polish diacritics in commit message (AGENTS.md rule 7: English only)." >&2
     echo "commit-msg: false alarm? FIRST record it in docs/governance/gate-metrics.md, THEN retry with --no-verify." >&2
     exit 1
 fi

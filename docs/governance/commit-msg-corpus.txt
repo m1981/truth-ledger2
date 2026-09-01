@@ -8,3 +8,7 @@ fix: handle null pointer in checkout flow
 docs: clarify API rate limits
 Revert "temporary workaround for CI cache"
 chore: bump python to 3.12
+Credit Michał Nowak for the parser fix
+Thanks to Paweł for the review
+Normalize ó to o in slug generation
+uppercase Polish diacritic Ś in transliteration table
