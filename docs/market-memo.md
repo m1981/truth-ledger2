@@ -97,6 +97,21 @@ per-task billing. What this implies:
 - **Rulingless windows are work.** The subscription flows when nobody
   is issuing commands; those windows belong to harvests, sweeps, and
   capsule maintenance — never to new mechanisms (C1 still holds).
+- **Choreographies** — the fifth category, added 2026-09-01:
+  repeatable processes as checklists with verification points
+  (`docs/runbooks/`), delivered at the moment of action and
+  capsule-guarded against rot, never narrative (v1's process document
+  decayed to "prose no code invokes" `[M]`). Provenance `[S]`:
+  SOP/runbook practice, the checklist tradition, DO-178's SDP — and
+  Kotarbiński's praxeology, two of whose concepts this system had
+  been practicing without the name: **potencjalizacja** (an effect
+  achieved by real, proven readiness rather than constant action —
+  which is what a C2-witnessed gate is: it works mostly by existing,
+  and the witness is what keeps the potential honest) and **creating
+  conditions instead of coercion** — the system's whole answer to
+  CMP-001: prose commands don't bind an agent, so arrange the moment
+  of action (whisper, ready, SessionStart injection, staff-worked
+  options) until the right move is the cheap one.
 - **The sensorium, as vocabulary:** correspondence (`check`), touch
   (`whisper` — "you are about to touch this"), proprioception
   (gate-metrics and F-10 — feeling one's own organs), and two senses

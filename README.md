@@ -38,10 +38,13 @@ through complaints (constitution C1).
    each priced by a named failure)
 3. `docs/architecture.md` — engine, installations, the LLM rule
 4. `docs/candidates.md` — designed candidates, none of them promises
-5. `docs/diagrams.md` — the system in five cross-sections
+5. `docs/runbooks/` — the choreographies: how a purchase, a
+   maintenance loop, a session, a consumer installation, and a
+   release are actually run (checklists, capsule-guarded)
+6. `docs/diagrams.md` — the system in five cross-sections
    (capsule-guarded; run `./scripts/tl2 whisper docs/diagrams.md`
    before editing it or its sources)
-6. `docs/market-memo.md` — why anyone would pay (non-normative)
-7. `docs/registers/prefixes.md` — identifier allocation
-8. `docs/complaints/README.md` — the door mechanisms enter through
-9. `AGENTS.md` — conduct for agents working here
+7. `docs/market-memo.md` — why anyone would pay (non-normative)
+8. `docs/registers/prefixes.md` — identifier allocation
+9. `docs/complaints/README.md` — the door mechanisms enter through
+10. `AGENTS.md` — conduct for agents working here
