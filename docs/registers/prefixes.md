@@ -12,6 +12,7 @@ the first row of its own table, so its own staleness is somebody's job.
 | `SC-<slug>-NNN` | spec assertions (F-2, `tl2 mirror`) | 2026-08-31 | live (F-2 bought 2026-09-01, CMP-005) |
 | `cap-<hex8>` | evidence capsules, `capsules.jsonl` (content-hash ids, per installation) | 2026-08-31 | live |
 | `ret-<hex8>` | capsule retraction tombstones, `capsules.jsonl` (content-hash ids, per installation) | 2026-09-01 | live |
+| `D<n>` / `O<n>` | answer-local row addresses (AGENTS rule 11): session-scoped, expire with the answer, never durable — durable identity is the CMP-/F-/cap- id carried beside them | 2026-09-01 | live |
 
 Rules:
 

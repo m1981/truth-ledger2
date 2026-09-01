@@ -91,7 +91,7 @@ per-task billing. What this implies:
   it — this repository's first founding measured exactly that and
   replaced its plan with a never-ratified catalog.
 - **The operator is the scarcest resource.** Rulings are batched with
-  evidence and a recommendation (AGENTS.md rule 11); nothing waits on
+  evidence and a recommendation (AGENTS.md rule 10); nothing waits on
   the operator that is not genuinely theirs. `[M]` v1 carried
   "human-only" items that hung for weeks.
 - **Rulingless windows are work.** The subscription flows when nobody

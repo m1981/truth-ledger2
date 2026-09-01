@@ -54,6 +54,16 @@ a measurement, false by 4x within a day (CMP-003). The label is the
 cheap guard against the harvest's second-largest harm class (F-4:
 the author's sentence was false).
 
+The mark carries a second obligation (provenance: v1's ADR-063, which
+records earning it three times in one session `[unverified here]`;
+adopted by operator ruling O2, 2026-09-01): **name the source** — for
+`[M]`, the command run or the file read, and be able to say why that
+source governs the claim's whole domain, because one instance is not
+the domain. A measurement mark that cannot name what it read is `[I]`
+wearing better clothes. An `[I]` that a decision or recommendation
+stands on adds a one-line warrant: on what licence these data yield
+this claim.
+
 **9. Falsification is staffed diversely.** One fresh session of the
 author's own model is independence of context, not of failure: this
 repository measured a same-model adversary producing fifteen findings
@@ -63,15 +73,65 @@ more than one reviewer with different briefs or different histories
 whenever the operator can supply them; a single fresh clone of the
 author is the floor, never the standard.
 
-**10. Decisions are batched.** Rulings go to the operator in packages
-— each item with its evidence and a recommendation — never as a drip
-of single questions. Everything reversible proceeds without waiting;
-only what is genuinely the operator's (rulings, countersigns,
-boundaries) waits at all. The operator is the scarcest resource in
-this environment, and v1 measured the anti-pattern: "human-only"
-queue items hanging for weeks while agents idled around them.
+**10. Decisions are batched, and named by kind.** Rulings go to the
+operator in packages — each item with its evidence and a
+recommendation — never as a drip of single questions. Everything
+reversible proceeds without waiting; only what is genuinely the
+operator's (rulings, countersigns, boundaries) waits at all. Each item
+names its kind, because the label must carry cost information (v1's
+ADR-063: three orders of magnitude under one label carry none):
 
-**11. Prose does not outrun truth.** Present tense is for what exists;
+- **RULING** — a binary choice with something already waiting on it;
+  costs a sentence.
+- **JUDGEMENT** — costs thought and no working tree; answerable at any
+  time, from anywhere.
+- **SPECIFICATION** — changes a mechanism, costs a session; it is
+  REFERRED to its own slot, never answered between other things. At
+  most **one specification in flight at a time** — a limit survives
+  being checked later, where a promised date must be remembered and
+  re-derived. The limit's carrier is the decision package itself: each
+  package names the specification in flight, if any; beyond that,
+  rule 11's prose-does-not-bind declaration covers this limit too.
+
+The package and the question are two different acts, not a
+contradiction: the package delivers every item, addressed, with
+evidence and a recommendation — and **exactly one item in it is
+marked as the question pending now** (the oldest); the rest wait
+addressed but unasked, because a menu of three pending rulings is the
+mechanism of stall. The operator is the scarcest resource in this
+environment, and v1 measured the anti-pattern: "human-only" queue
+items hanging for weeks while agents idled around them
+`[unverified here — v1 session records]`.
+
+**11. Findings terminate, or the answer is not finished.** A finding
+here is something **actionable** — a thing someone could do or decide;
+expository observation carries no termination duty. Every actionable
+finding an answer raises — and every item of a list handed in from
+elsewhere, transcribed row by row before any of it is acted on —
+terminates in exactly one of: **robię**, **Twoja decyzja** (with its
+kind per rule 10), or **odpuszczam — z powodem**. Unclassified: zero.
+A finding not worth terminating was not worth raising. Rows carry
+local addresses (D1.., O1.. — registered as a session-scoped space in
+the prefix register) so the operator answers by address, not by
+quotation; an open item that must outlive the session is filed as a
+complaint or a register row — the stores `tl2 ready` already derives
+from — never into a hand-kept list, which is the roster this
+repository keeps losing to. A closing recommendation contains only
+items already standing in the answer's own rows, names who EXECUTES
+and who APPROVES each, and a one-sentence answer skips the whole
+skeleton — four headers over one sentence is theatre. Two limits,
+declared: `odpuszczam` is session-scoped by design (an orphan audit is
+its compensating control — so far a practice run on the operator's
+word, twice this founding, not a built mechanism), and this rule is
+prose — CMP-001 taught that prose does not bind, its gate cannot exist
+here (the transcript lives outside the repository), and the operator
+re-asking for something already delivered is its only metric.
+Provenance: adopted by operator ruling O2 (2026-09-01) from v1's
+ADR-063, whose measured base — 374 findings, 82% terminated overall,
+42% in expository answers — is cited `[unverified here — lives in
+v1's ADR-063]`; the numbers are provenance, not justification.
+
+**12. Prose does not outrun truth.** Present tense is for what exists;
 future tense is for what is designed. A README sentence claiming a
 capability that is not built is the exact defect class this product
 hunts, and it appeared in this repository's own first README.
