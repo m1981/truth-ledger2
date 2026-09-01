@@ -64,7 +64,7 @@ stateDiagram-v2
 ```mermaid
 flowchart LR
     subgraph ENGINE["ENGINE - stateless, tagged releases only"]
-        TL2["scripts/tl2<br/>verbs: capsule, check, vacuity,<br/>whisper, retract, mirror, ready"]
+        TL2["scripts/tl2<br/>verbs: capsule, check, vacuity, whisper,<br/>retract, mirror, ready, verify"]
         DEVGATES["engine-dev gates<br/>(commit-msg hook)<br/>never install"]
     end
     subgraph INST1["INSTALLATION #1 - this repo (dogfood)"]
@@ -129,7 +129,7 @@ flowchart LR
     D1 --> F1["F-1 spec lint<br/>evidence: 2"]
     D2 --> F2["F-2 traceability mirror<br/>evidence: 5"]
     D3 --> F3["F-3 vacuity - BUILT<br/>evidence: 14 - dominant"]
-    D4 --> F4["F-4 fresh verifier<br/>evidence: 7"]
+    D4 --> F4["F-4 fresh verifier - BUILT<br/>evidence: 7"]
     D5 --> F5["F-5 capsules - BUILT<br/>evidence: 3"]
     D6 --> F6["F-6 criticality tiers<br/>evidence: 4, incl. 555/630 false alarms"]
     D7 --> F7["F-7 separation canary - BUILT<br/>evidence: 4"]

@@ -29,3 +29,4 @@ Form rules, priced by measurement:
 | `session.md` | opening and closing an agent session |
 | `consumer.md` | the two-repository contract of an installation |
 | `release.md` | tagging the engine |
+| `verifier.md` | dispatching a fresh-context verifier and intaking its report |

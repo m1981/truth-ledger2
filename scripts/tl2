@@ -1,11 +1,23 @@
 #!/usr/bin/env python3
 """tl2 — the engine's CLI. Verbs: capsule, check, vacuity, whisper,
-retract, mirror, ready.
+retract, mirror, ready, verify.
 
 tier: client (ships to installations)
 Bought by: CMP-002 (capsule/check), CMP-006 (vacuity), CMP-011
-(whisper), CMP-017 (retract), CMP-005 (mirror), CMP-018 (ready).
-Metric rows: docs/governance/gate-metrics.md.
+(whisper), CMP-017 (retract), CMP-005 (mirror), CMP-018 (ready),
+CMP-007 (verify). Metric rows: docs/governance/gate-metrics.md.
+
+verify (first F-4 instance, bought by CMP-007 — an author-verified
+sentence was false by 16x): the mechanical halves of the
+fresh-context-verifier ceremony. `--brief <cap-id>` emits the
+verifier's brief — the capsule's sentence and recipe plus the duty to
+go BEYOND the recipe (v1's good verifier checked `git show` and
+invocation, not just the hash) and the mandatory report skeleton.
+`--intake <file>` is the only part that gates (architecture §6): a
+report missing the `proposed-by: llm` marker, the independence-limit
+line, or a valid verdict is refused. The verdict itself NEVER gates —
+a human disposes. Dispatch criteria and choreography:
+docs/runbooks/verifier.md.
 
 mirror (bought by CMP-005): the bidirectional traceability check at
 grep weight — a manifest of ids (one per line) against the ids cited
@@ -328,6 +340,69 @@ def cmd_ready(args):
     return 0
 
 
+LIMIT_LINE = "independent in context, not in failure"
+
+
+def cmd_verify(args):
+    if args.brief:
+        rec = next((r for r in load_records(args.store)
+                    if r.get("id") == args.brief and "sentence" in r), None)
+        if rec is None:
+            sys.stderr.write("tl2: no capsule %s\n" % args.brief)
+            return 2
+        print("VERIFIER BRIEF — capsule %s" % rec["id"])
+        print("Sentence: %s" % rec["sentence"])
+        print("Recipe:   %s" % rec["cmd"])
+        print("Anchor:   %s   Watched: %s" % (rec["anchor"],
+                                              " ".join(rec["watch"])))
+        print("""
+Your duty goes BEYOND the recipe: (1) run the recipe and compare
+against the recorded hash; (2) check the anchor commit actually did
+what the sentence implies; (3) judge whether the command is the right
+instrument for the sentence's WHOLE domain — one instance is not the
+domain. You inherit no context from the author; that is the point.
+
+Report format — every line below is mandatory, intake refuses without
+them:
+  proposed-by: llm
+  limit: %s — the reviewer shares the author model's blind spots
+  verdict: agree | disagree | inconclusive
+  basis: <what you actually did and saw, beyond the recipe>
+
+The verdict never gates; a human disposes of it.""" % LIMIT_LINE)
+        return 0
+    if args.intake:
+        try:
+            text = open(args.intake).read()
+        except OSError as e:
+            sys.stderr.write("tl2: %s\n" % e)
+            return 2
+        worst = 0
+        if "proposed-by: llm" not in text:
+            print("RED  intake: missing `proposed-by: llm` marker "
+                  "(architecture §6.2)")
+            worst = 1
+        if LIMIT_LINE not in text:
+            print("RED  intake: missing the independence-limit line "
+                  "(architecture §6.4)")
+            worst = 1
+        verdicts = [l.split(":", 1)[1].strip() for l in text.splitlines()
+                    if l.strip().lower().startswith("verdict:")]
+        if not verdicts or verdicts[0] not in ("agree", "disagree",
+                                               "inconclusive"):
+            print("RED  intake: no valid verdict line "
+                  "(agree | disagree | inconclusive)")
+            worst = 1
+        if worst:
+            return 1
+        print("intake: report accepted — verdict %s; the human disposes"
+              % verdicts[0])
+        return 0
+    sys.stderr.write("tl2: verify needs --brief <cap-id> or "
+                     "--intake <file>\n")
+    return 2
+
+
 def main():
     ap = argparse.ArgumentParser(prog="tl2")
     ap.add_argument("--store", default=STORE)
@@ -359,11 +434,15 @@ def main():
     y.add_argument("--complaints", default="docs/complaints")
     y.add_argument("--metrics", default="docs/governance/gate-metrics.md")
     y.add_argument("--horizon", type=int, default=45)
+    f = sub.add_parser("verify",
+                       help="F-4: brief a fresh verifier / intake its report")
+    f.add_argument("--brief", metavar="CAP_ID")
+    f.add_argument("--intake", metavar="REPORT_FILE")
     args = ap.parse_args()
     return {"capsule": cmd_capsule, "check": cmd_check,
             "vacuity": cmd_vacuity, "whisper": cmd_whisper,
             "retract": cmd_retract, "mirror": cmd_mirror,
-            "ready": cmd_ready}[args.verb](args)
+            "ready": cmd_ready, "verify": cmd_verify}[args.verb](args)
 
 
 if __name__ == "__main__":
