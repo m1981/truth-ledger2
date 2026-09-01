@@ -1,12 +1,24 @@
 #!/usr/bin/env python3
 """tl2 — the engine's CLI. Verbs: capsule, check, vacuity, whisper,
-retract, mirror, ready, verify.
+retract, mirror, ready, verify, lint.
 
 tier: client (ships to installations)
 Bought by: CMP-002 (capsule/check), CMP-006 (vacuity), CMP-011
 (whisper), CMP-017 (retract), CMP-005 (mirror), CMP-018 (ready),
-CMP-007 (verify), CMP-009 (criticality tiers inside whisper/ready).
+CMP-007 (verify), CMP-009 (criticality tiers inside whisper/ready),
+CMP-020 (mirror citation scope), CMP-004 (lint, proposer only).
 Metric rows: docs/governance/gate-metrics.md.
+
+lint (first F-1 instance, bought by CMP-004 — a spec sentence that no
+test could fail seeded zero rows silently): the PROPOSER only. The
+ruled gating layer measured empty on real traffic (107 normative
+lines, 0 hits, and a miss on CMP-004's own sentence) and stays
+unbought. `--brief <spec>` extracts candidate lines mechanically
+(extraction suggests, never judges) and hands a fresh session the
+judgment duty plus the report skeleton; `--intake <file>` gates only
+the report's shape (marker, limit line, finding blocks, SC-
+proposals). A proposal never gates; a human accepts it into the spec,
+or not.
 
 verify (first F-4 instance, bought by CMP-007 — an author-verified
 sentence was false by 16x): the mechanical halves of the
@@ -321,6 +333,7 @@ def cmd_mirror(args):
     # 28 false orphans on its first real installation run.
     families = {i.rsplit("-", 1)[0] for i in manifest}
     pattern = _re.compile(args.pattern)
+    cite_name = _re.compile(args.cite_name)
     cited = set()
     for root, _dirs, files in os.walk(args.root):
         if "/." in root or root.startswith("./."):
@@ -328,6 +341,13 @@ def cmd_mirror(args):
         for name in files:
             path = os.path.join(root, name)
             if os.path.abspath(path) == os.path.abspath(args.manifest):
+                continue
+            # CMP-020: citations count only from test-shaped files by
+            # default — the spec's own inline ids satisfied the scan
+            # and killed the GAP direction in the shipped layout (v1's
+            # ruling, dropped by the first build: "an id cited only in
+            # conftest.py or a README is invisible by design").
+            if not args.cite_all and not cite_name.search(name):
                 continue
             try:
                 with open(path, errors="ignore") as fh:
@@ -469,6 +489,77 @@ The verdict never gates; a human disposes of it.""" % LIMIT_LINE)
     return 2
 
 
+LINT_KEYWORDS = r"\b(shall|must|always|never|only|may|should|will)\b"
+
+
+def cmd_lint(args):
+    import re as _re
+    if args.brief:
+        try:
+            lines = open(args.brief).read().splitlines()
+        except OSError as e:
+            sys.stderr.write("tl2: %s\n" % e)
+            return 2
+        kw = _re.compile(LINT_KEYWORDS, _re.I)
+        cands = [(i + 1, l.strip()) for i, l in enumerate(lines)
+                 if kw.search(l)][:40]
+        print("PROPOSER BRIEF — spec %s" % args.brief)
+        print("Candidate normative-ish lines (keyword-extracted, %d shown;"
+              " extraction only suggests, it never judges):" % len(cands))
+        for no, text in cands:
+            print("  %s:%d  %s" % (args.brief, no, text[:160]))
+        print("""
+Your duty is JUDGMENT, which no keyword list carries (measured: the
+one real incident of this class — "extras may run in any order" —
+contains no stock keyword-vagueness pair): flag the sentences a test
+could never fail, including quantities with no number ("in minutes",
+"fast enough"), conditions with no negative branch, and "may"-strength
+norms; for each, draft 2-3 testable SC-<slug>-NNN assertions (slug
+from the spec filename; check docs/specs/sc-slugs.txt where present).
+
+Report format — mandatory lines, intake refuses without them:
+  proposed-by: llm
+  limit: %s — the reviewer shares the author model's blind spots
+  finding: <file>:<line>  (one block per flagged sentence)
+  why: <one line: what makes it untestable>
+  proposes: SC-<slug>-NNN <the testable assertion>
+
+Proposals never gate; a human accepts them into the spec, or not.""" %
+              LIMIT_LINE)
+        return 0
+    if args.intake:
+        try:
+            text = open(args.intake).read()
+        except OSError as e:
+            sys.stderr.write("tl2: %s\n" % e)
+            return 2
+        worst = 0
+        if "proposed-by: llm" not in text:
+            print("RED  intake: missing `proposed-by: llm` marker "
+                  "(architecture §6.2)")
+            worst = 1
+        if LIMIT_LINE not in text:
+            print("RED  intake: missing the independence-limit line "
+                  "(architecture §6.4)")
+            worst = 1
+        findings = [l for l in text.splitlines()
+                    if l.strip().lower().startswith("finding:")]
+        if not findings:
+            print("RED  intake: no `finding:` block")
+            worst = 1
+        if "SC-" not in text:
+            print("RED  intake: no SC- proposal — a flag without a "
+                  "testable replacement is half the duty")
+            worst = 1
+        if worst:
+            return 1
+        print("intake: proposal accepted — %d finding(s); a human "
+              "disposes" % len(findings))
+        return 0
+    sys.stderr.write("tl2: lint needs --brief <spec> or --intake <file>\n")
+    return 2
+
+
 def main():
     ap = argparse.ArgumentParser(prog="tl2")
     ap.add_argument("--store", default=STORE)
@@ -498,6 +589,10 @@ def main():
     m.add_argument("--manifest", required=True)
     m.add_argument("--root", default=".")
     m.add_argument("--pattern", default=r"SC-[a-z0-9]{3,12}-[0-9]{3}")
+    m.add_argument("--cite-name", default=r"(^test_|_test\.)",
+                   help="basename regex of files whose citations count")
+    m.add_argument("--cite-all", action="store_true",
+                   help="pre-CMP-020 behavior: every file cites")
     y = sub.add_parser("ready", help="the derived queue: what is ready to act on")
     y.add_argument("--complaints", default="docs/complaints")
     y.add_argument("--metrics", default="docs/governance/gate-metrics.md")
@@ -506,11 +601,16 @@ def main():
                        help="F-4: brief a fresh verifier / intake its report")
     f.add_argument("--brief", metavar="CAP_ID")
     f.add_argument("--intake", metavar="REPORT_FILE")
+    g = sub.add_parser("lint",
+                       help="F-1 proposer: brief a spec linter / intake proposals")
+    g.add_argument("--brief", metavar="SPEC_FILE")
+    g.add_argument("--intake", metavar="REPORT_FILE")
     args = ap.parse_args()
     return {"capsule": cmd_capsule, "check": cmd_check,
             "vacuity": cmd_vacuity, "whisper": cmd_whisper,
             "retract": cmd_retract, "mirror": cmd_mirror,
-            "ready": cmd_ready, "verify": cmd_verify}[args.verb](args)
+            "ready": cmd_ready, "verify": cmd_verify,
+            "lint": cmd_lint}[args.verb](args)
 
 
 if __name__ == "__main__":

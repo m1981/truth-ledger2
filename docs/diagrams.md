@@ -68,7 +68,7 @@ stateDiagram-v2
 ```mermaid
 flowchart LR
     subgraph ENGINE["ENGINE - stateless, tagged releases only"]
-        TL2["scripts/tl2<br/>verbs: capsule, check, vacuity, whisper,<br/>retract, mirror, ready, verify"]
+        TL2["scripts/tl2<br/>verbs: capsule, check, vacuity, whisper, retract,<br/>mirror, ready, verify, lint"]
         DEVGATES["engine-dev gates<br/>(commit-msg hook)<br/>never install"]
     end
     subgraph INST1["INSTALLATION #1 - this repo (dogfood)"]
@@ -130,7 +130,7 @@ flowchart LR
         D12["nobody could say what was ready"]
         D13["ceremony ate the subscription"]
     end
-    D1 --> F1["F-1 spec lint<br/>evidence: 2"]
+    D1 --> F1["F-1 spec lint (proposer) - BUILT<br/>evidence: 2"]
     D2 --> F2["F-2 traceability mirror - BUILT<br/>evidence: 5"]
     D3 --> F3["F-3 vacuity - BUILT<br/>evidence: 14 - dominant"]
     D4 --> F4["F-4 fresh verifier - BUILT<br/>evidence: 7"]
