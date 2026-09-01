@@ -393,3 +393,17 @@ rewrite, and restored by operator ruling of 2026-08-31):
   played by C3 probation (gates die by their own record) and the
   operator's rulings.
 - **Validation and process assurance** — scope R1 and R4.
+- **Classic ADR corpus** (priced by operator ruling, 2026-09-01, after
+  the absence was caught undeclared) — refused: v2 records decisions
+  at their point of force — complaint dispositions, ruling lines,
+  erratum sections, register rows, priced purchase records, `ret-`
+  tombstones — and a parallel decision register would be a second
+  register of the same items: the EPI-collision class, and the disease
+  C1's own purchase record names ("~60 ADRs of machinery bottom-up").
+  Accepted cost, named: decisions that are neither purchases nor
+  document rulings live in commit messages — anchored, append-only,
+  but not topically discoverable. When F-11 is bought, **ruling
+  sections and dispositions — not new ADR files — are its watchable
+  decision records**; and the first decision that proves
+  undiscoverable in a commit message is the complaint that buys a
+  decision index.
