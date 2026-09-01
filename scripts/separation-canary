@@ -94,7 +94,7 @@ def main():
             sh(cmd, sandbox)
         open(os.path.join(sandbox, "man.txt"), "w").write("SC-can-001\n")
         os.makedirs(os.path.join(sandbox, "tests"))
-        open(os.path.join(sandbox, "tests", "t.py"), "w").write(
+        open(os.path.join(sandbox, "tests", "test_can.py"), "w").write(
             '"""SC-can-001"""\n')
         open(os.path.join(sandbox, "code.py"), "w").write(
             "def f(x):\n    return x + 2  # seeded bug\n")
