@@ -49,6 +49,8 @@ through complaints (constitution C1).
    nothing (queried, not read)
 9. `docs/primer.md` — the borrowed discourse vocabulary, with usage
    (companion to the lexicon)
-10. `docs/registers/prefixes.md` — identifier allocation
-11. `docs/complaints/README.md` — the door mechanisms enter through
-12. `AGENTS.md` — conduct for agents working here
+10. `docs/genealogy.md` — where the moves came from: meta-layers
+    bought crisis by crisis (dictionary family)
+11. `docs/registers/prefixes.md` — identifier allocation
+12. `docs/complaints/README.md` — the door mechanisms enter through
+13. `AGENTS.md` — conduct for agents working here
