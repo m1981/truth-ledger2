@@ -26,7 +26,7 @@ Rules:
 | # | Repository | Engine version pinned | Initialized | Status |
 |---|---|---|---|---|
 | 1 | this repository (dogfood) | HEAD (engine-dev runs hot, by design) | 2026-08-31 (CMP-002) | live |
-| 2 | `~/PycharmProjects/kuchnie` (github.com/m1981/kuchnie) | v0.1.0 | 2026-09-01 (operator ruling O1, after the v1 freeze there) | live |
+| 2 | `~/PycharmProjects/kuchnie` (github.com/m1981/kuchnie) | v0.1.1 | 2026-09-01 (operator ruling O1, after the v1 freeze there; re-pinned same day after the slug-scoping fix its own first run bought) | live |
 
 Installation state (capsules.jsonl, its cap-/ret- ids) never leaves
 its repository (scope R5) and stores are never merged across

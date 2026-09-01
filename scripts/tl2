@@ -244,6 +244,12 @@ def cmd_mirror(args):
     import re as _re
     with open(args.manifest) as fh:
         manifest = {l.strip() for l in fh if l.strip()}
+    # Slug scoping: only ids of the manifest's own famil(ies) are this
+    # mirror's business — a root holding two spec families must not
+    # flag the sibling family as orphans. v1's falsification round had
+    # already named this amendment; the unscoped first build measured
+    # 28 false orphans on its first real installation run.
+    families = {i.rsplit("-", 1)[0] for i in manifest}
     pattern = _re.compile(args.pattern)
     cited = set()
     for root, _dirs, files in os.walk(args.root):
@@ -258,6 +264,7 @@ def cmd_mirror(args):
                     cited.update(pattern.findall(fh.read()))
             except OSError:
                 continue
+    cited = {c for c in cited if c.rsplit("-", 1)[0] in families}
     worst = 0
     for gap in sorted(manifest - cited):
         print("GAP     %s  in manifest, cited nowhere under %s"
