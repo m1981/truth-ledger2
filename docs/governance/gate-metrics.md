@@ -22,6 +22,8 @@ seeded red AND a recorded corpus test of plausible legitimate traffic.
 
 | `scripts/tl2 verify` (intake gate) | client | CMP-007 | 2026-09-01 | 2026-09-01, two seeded reports refused: one missing the marker AND the limit line (both REDs printed), one with an invalid verdict | 2026-09-01: a well-formed disagree report accepted; brief generated from a live capsule. Battle run same day (docs/verifications/cap-45714053-2026-09-01.md): fresh verifier agreed with the scoped sentence AND found a real author blind spot — the all-ASCII corpus is structurally incapable of triggering the live diacritics detector, and 6 of 8 invented legitimate messages naming Polish people/places were blocked. The ceremony paid on its first dispatch. Only intake gates (architecture §6.2); the verdict never does | 1 | 0 | 2026-12-31 |
 
+| criticality tiers (`tl2 whisper`/`ready` scaling) | client | CMP-009 | 2026-09-01 | 2026-09-01, seeded fixture: a `money`-classed path whispered tagged and at full voice, a suspect on it listed FIRST in ready with its tag; five plain watchers budgeted to three lines plus the budget summary | 2026-09-01: `--all` lifts the cap (six lines, no summary); with no tiers file, no tags and everything plain — unearned rigor never engages. Classification is a dated operator ruling; installation #1's proposal awaits ratification (`criticality.tiers.proposed`) | 0 | 0 | 2026-12-31 |
+
 Counting rules:
 
 - A catch is a rejected message that was genuinely Polish; a false

@@ -5,7 +5,8 @@ retract, mirror, ready, verify.
 tier: client (ships to installations)
 Bought by: CMP-002 (capsule/check), CMP-006 (vacuity), CMP-011
 (whisper), CMP-017 (retract), CMP-005 (mirror), CMP-018 (ready),
-CMP-007 (verify). Metric rows: docs/governance/gate-metrics.md.
+CMP-007 (verify), CMP-009 (criticality tiers inside whisper/ready).
+Metric rows: docs/governance/gate-metrics.md.
 
 verify (first F-4 instance, bought by CMP-007 — an author-verified
 sentence was false by 16x): the mechanical halves of the
@@ -52,10 +53,21 @@ whisper (first F-8 instance): given paths about to be touched, prints
 one line per capsule watching them — context injection at the moment
 of action, wired into an agent harness's pre-edit hook. Fail-open by
 design: it never blocks, never exits nonzero on content, and stays
-silent when nothing watches. No fatigue budget yet: there is no
-priority field to budget by; the first noise complaint buys one
-(CMP-008's measured 3x-understated whisper ratio is the cautionary
-record).
+silent when nothing watches.
+
+criticality tiers (first F-6 instance, bought by CMP-009 — fourteen
+v1 sentinels produced 43 alarms and zero defects): the installation
+may carry `criticality.tiers`, lines of `<class> <path-prefix>` with
+classes money | auth | data-integrity | compliance | plain; unlisted
+paths are plain, and no file means everything is plain — unearned
+rigor is how alarm fatigue starts, so rigor is ruled, never inferred
+(the classification is a dated operator ruling; an LLM proposal stays
+a `.proposed` file until ratified). Two consumers scale on it:
+`whisper` tags non-plain hits with their class and speaks them all,
+while plain hits are budgeted to three lines (`--all` lifts the cap)
+— v1's full-voice/one-line fatigue design, finally bought by the
+alarm-fatigue complaint it was waiting for; `ready` tags non-OK
+capsules on non-plain paths and lists them first.
 
 First F-5 instance (docs/candidates.md): an evidence capsule binds a
 sentence to the command that evidences it, the sha256 of that command's
@@ -236,19 +248,65 @@ def cmd_vacuity(args):
         shutil.rmtree(scratch, ignore_errors=True)
 
 
+TIER_CLASSES = ("money", "auth", "data-integrity", "compliance", "plain")
+
+
+def load_tiers():
+    tiers = []
+    if os.path.exists("criticality.tiers"):
+        with open("criticality.tiers") as fh:
+            for line in fh:
+                line = line.strip()
+                if not line or line.startswith("#"):
+                    continue
+                parts = line.split(None, 1)
+                if len(parts) == 2 and parts[0] in TIER_CLASSES:
+                    tiers.append((parts[0], parts[1].strip().rstrip("/")))
+    return tiers
+
+
+def classify(path, tiers):
+    p = path.rstrip("/")
+    for cls, prefix in tiers:
+        if p == prefix or p.startswith(prefix + "/"):
+            return cls
+    return "plain"
+
+
+def rec_class(rec, tiers):
+    classes = [classify(w, tiers) for w in rec.get("watch", [])]
+    for cls in TIER_CLASSES:
+        if cls in classes:
+            return cls
+    return "plain"
+
+
 def cmd_whisper(args):
     records = load_records(args.store)
     retracted = retraction_map(records)
+    tiers = load_tiers()
     targets = [p.rstrip("/") for p in args.paths]
+    hits = []
     for rec in records:
         if rec.get("kind") == "retraction" or rec["id"] in retracted:
             continue
         for w in rec["watch"]:
-                w = w.rstrip("/")
-                if any(p == w or p.startswith(w + "/") for p in targets):
-                    print("whisper %s  %s  [anchored %s]"
-                          % (rec["id"], rec["sentence"], rec["anchor"][:7]))
-                    break
+            w = w.rstrip("/")
+            if any(p == w or p.startswith(w + "/") for p in targets):
+                hits.append((classify(w, tiers), rec))
+                break
+    nonplain = [(c, r) for c, r in hits if c != "plain"]
+    plain = [r for c, r in hits if c == "plain"]
+    for cls, rec in nonplain:
+        print("whisper [%s] %s  %s  [anchored %s]"
+              % (cls, rec["id"], rec["sentence"], rec["anchor"][:7]))
+    shown = plain if args.all else plain[:3]
+    for rec in shown:
+        print("whisper %s  %s  [anchored %s]"
+              % (rec["id"], rec["sentence"], rec["anchor"][:7]))
+    if not args.all and len(plain) > len(shown):
+        print("whisper: +%d more plain-class watcher(s) — the fatigue "
+              "budget (CMP-009); `--all` lifts it" % (len(plain) - len(shown)))
     return 0
 
 
@@ -294,16 +352,24 @@ def cmd_ready(args):
     from datetime import date
     today = date.today()
     rows = 0
-    for rec in load_records(args.store):
-        if rec.get("kind") == "retraction":
-            continue
-        if rec["id"] in retraction_map(load_records(args.store)):
+    records = load_records(args.store)
+    retracted = retraction_map(records)
+    tiers = load_tiers()
+    cap_rows = []
+    for rec in records:
+        if rec.get("kind") == "retraction" or rec["id"] in retracted:
             continue
         status, why = check_one(rec)
         if status != "OK":
-            print("capsule    %-7s %s  %s — retire or re-anchor"
-                  % (status, rec["id"], rec["sentence"]))
-            rows += 1
+            cls = rec_class(rec, tiers)
+            tag = ("[%s] " % cls) if cls != "plain" else ""
+            cap_rows.append((TIER_CLASSES.index(cls),
+                             "capsule    %-7s %s%s  %s — retire or "
+                             "re-anchor" % (status, tag, rec["id"],
+                                            rec["sentence"])))
+    for _, line in sorted(cap_rows, key=lambda t: t[0]):
+        print(line)
+        rows += 1
     cdir = args.complaints
     if os.path.isdir(cdir):
         for name in sorted(os.listdir(cdir)):
@@ -420,6 +486,8 @@ def main():
     w = sub.add_parser("whisper",
                        help="which capsules watch the paths I am about to touch")
     w.add_argument("paths", nargs="+")
+    w.add_argument("--all", action="store_true",
+                   help="lift the plain-class fatigue budget (F-6)")
     r = sub.add_parser("retract",
                        help="tombstone a capsule with a cause and successor")
     r.add_argument("cap")

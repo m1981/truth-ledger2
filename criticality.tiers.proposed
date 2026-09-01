@@ -1,0 +1,8 @@
+# proposed-by: llm (2026-09-01) — an F-6 classification PROPOSAL for
+# installation #1. NOT in force: tl2 reads only `criticality.tiers`,
+# and until the operator ratifies (renames this file, dated), every
+# path is plain — rigor is ruled, never inferred.
+compliance docs/scope.md
+compliance docs/governance
+compliance docs/registers
+compliance docs/complaints
