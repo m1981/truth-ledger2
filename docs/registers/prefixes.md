@@ -20,6 +20,17 @@ Rules:
   this table, so two installations can never collide.
 - Retiring a prefix is a row-status change with a date, never a row
   deletion.
+
+## Installations
+
+| # | Repository | Engine version pinned | Initialized | Status |
+|---|---|---|---|---|
+| 1 | this repository (dogfood) | HEAD (engine-dev runs hot, by design) | 2026-08-31 (CMP-002) | live |
+| 2 | `~/PycharmProjects/kuchnie` (github.com/m1981/kuchnie) | v0.1.0 | 2026-09-01 (operator ruling O1, after the v1 freeze there) | live |
+
+Installation state (capsules.jsonl, its cap-/ret- ids) never leaves
+its repository (scope R5) and stores are never merged across
+installations, so content-hash ids cannot collide between them.
 - Declared gap: nothing enumerates this register's population from
   reality (no sweep checks that every id space in use has a row). v1
   ended up needing exactly that sweep. Until a complaint buys one, this
