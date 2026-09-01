@@ -45,6 +45,8 @@ through complaints (constitution C1).
    (capsule-guarded; run `./scripts/tl2 whisper docs/diagrams.md`
    before editing it or its sources)
 7. `docs/market-memo.md` — why anyone would pay (non-normative)
-8. `docs/registers/prefixes.md` — identifier allocation
-9. `docs/complaints/README.md` — the door mechanisms enter through
-10. `AGENTS.md` — conduct for agents working here
+8. `docs/lexicon.md` — the dictionary: names things, justifies
+   nothing (queried, not read)
+9. `docs/registers/prefixes.md` — identifier allocation
+10. `docs/complaints/README.md` — the door mechanisms enter through
+11. `AGENTS.md` — conduct for agents working here
