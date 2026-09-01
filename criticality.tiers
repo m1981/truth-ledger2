@@ -1,0 +1,8 @@
+# Ratified by operator ruling, 2026-09-01 ("RULING, go") — F-6
+# classification for installation #1. Law and records are the audit
+# surface: sentences about them carry compliance weight. Everything
+# unlisted is plain. Amending this file is a new dated ruling.
+compliance docs/scope.md
+compliance docs/governance
+compliance docs/registers
+compliance docs/complaints
