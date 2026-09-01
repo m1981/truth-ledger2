@@ -89,3 +89,5 @@
 {"cause": "diagrams edited: fifth genre drawn", "id": "ret-4bef27a4", "kind": "retraction", "retracts": "cap-1a2856ef", "successor": "cap-6f0b5bce", "ts": "2026-09-01T12:04:26Z"}
 {"cause": "diagrams edited: fifth genre drawn", "id": "ret-8036a483", "kind": "retraction", "retracts": "cap-f2077658", "successor": "cap-5fa64b41", "ts": "2026-09-01T12:04:27Z"}
 {"cause": "diagrams edited: fifth genre drawn", "id": "ret-f5751d0a", "kind": "retraction", "retracts": "cap-aa7cee3a", "successor": "cap-6582d80e", "ts": "2026-09-01T12:04:28Z"}
+{"anchor": "8f0e9f6611e3fda697d5a6b160ab0ef0edecdec0", "cmd": "grep -c '^## F-' docs/candidates.md", "id": "cap-10c59216", "output_sha256": "1a252402972f6057fa53cc172b52b9ffca698e18311facd0f3b06ecaaef79e17", "sentence": "diagrams.md's distrust map matches the catalog: thirteen candidate rows F-1..F-13", "ts": "2026-09-01T12:17:31Z", "watch": ["docs/candidates.md", "docs/diagrams.md"]}
+{"cause": "catalog annotated with the measured F-1/F-2 review", "id": "ret-17d0289f", "kind": "retraction", "retracts": "cap-5fa64b41", "successor": "cap-10c59216", "ts": "2026-09-01T12:17:32Z"}
