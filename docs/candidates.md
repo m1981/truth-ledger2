@@ -76,6 +76,16 @@ drafting their decomposition into `SC-` assertions (F-2's input), as
 **Buyer class:** a spec sentence that could not be tested caused
 rework, a dispute, or a shipped misunderstanding.
 
+**Measured on the consumer corpus (2026-09-01, effectiveness review):**
+the ruled gating layer produced **zero signal** over 21 specs — 107
+normative lines, 0 red hits, precision undefined — while demonstrably
+missing both QB-001's harmful sentence ("may" is not a listed keyword;
+"any order" is not in the vocabulary) and the corpus's self-declared
+untestables ("in minutes", screens.md:45). The proposer layer, demoed
+on the same spec, produced seven usable SC decompositions. The
+measurement says: if F-1 is ever bought, buy the proposer; the ruled
+mechanical layer as scoped is empty on real traffic.
+
 **Refuses:** judging whether a requirement is the *right* requirement
 (scope R1).
 
@@ -96,6 +106,14 @@ red by default.
 
 **Buyer class:** a spec assertion shipped with no test, or a test cited
 an assertion that did not exist, and somebody paid for the gap.
+
+**Measured on the consumer (2026-09-01):** fast (five manifests, both
+directions, under five seconds) and the ORPHAN direction earns its
+keep — but the GAP direction is structurally dead in the shipped
+layout (inline spec ids satisfy the citation scan: CMP-020), and 16 of
+21 consumer specs carry no manifest at all. Effectiveness today:
+typo/phantom citations and manifest↔spec drift, not untested
+assertions.
 
 **Refuses:** measuring *how well* a citing test exercises its assertion
 (that is F-3's distrust; beyond it, structural coverage, refused by
