@@ -8,10 +8,10 @@ SUSPECT on any of them means a picture below may be lying.
 
 ## 1. The document layers — what may change what
 
-Four genres, one door. Law changes only by dated operator ruling;
-reasoning is deliberately never ratified; direction may be wrong
-without anything being broken; state is what recomputation cannot give
-back.
+Five genres, one door. Law changes only by dated operator ruling;
+reasoning is deliberately never ratified; choreographies say HOW and
+are delivered at the moment of action; direction may be wrong without
+anything being broken; state is what recomputation cannot give back.
 
 ```mermaid
 flowchart TB
@@ -22,6 +22,9 @@ flowchart TB
     subgraph REASONING["REASONING - never ratified"]
         CAND["docs/candidates.md<br/>F-1..F-13 + falsifier clause"]
     end
+    subgraph CHOREO["CHOREOGRAPHIES - checklists, capsule-guarded"]
+        RUNB["docs/runbooks/<br/>purchase, loop, session,<br/>consumer, release, verifier"]
+    end
     subgraph DIRECTION["DIRECTION - non-normative"]
         MEMO["docs/market-memo.md<br/>who pays, measured order"]
     end
@@ -29,7 +32,7 @@ flowchart TB
         CMPS["docs/complaints/<br/>CMP register - the only door"]
         REGS["docs/registers/prefixes.md"]
         METRICS["docs/governance/gate-metrics.md"]
-        CAPS["capsules.jsonl"]
+        CAPS["capsules.jsonl<br/>criticality.tiers"]
     end
     HARM(["harm event<br/>anyone's, dated, anchored"]) --> CMPS
     CMPS -- "C1: buys one mechanism<br/>operator countersigns" --> MECH["mechanism"]
@@ -39,6 +42,7 @@ flowchart TB
     MEMO -. "steers attention,<br/>buys NOTHING" .-> CMPS
     MECH -- "born with row" --> METRICS
     CAND -. "sketches, never builds" .-> MECH
+    RUNB -. "choreographs the act,<br/>never authorizes it" .-> MECH
 ```
 
 ## 2. The mechanism lifecycle — how anything gets in, lives, and dies
@@ -70,7 +74,7 @@ flowchart LR
     subgraph INST1["INSTALLATION #1 - this repo (dogfood)"]
         S1["capsules.jsonl<br/>gate-metrics.md<br/>complaints/"]
     end
-    subgraph INSTN["INSTALLATION #N - a client repo"]
+    subgraph INSTN["INSTALLATION #2 - kuchnie @ v0.1.1<br/>(and every future #N)"]
         SN["its own state<br/>never leaves (R5)"]
     end
     TL2 -- "same public surface (C4)<br/>no private doors" --> S1
@@ -127,7 +131,7 @@ flowchart LR
         D13["ceremony ate the subscription"]
     end
     D1 --> F1["F-1 spec lint<br/>evidence: 2"]
-    D2 --> F2["F-2 traceability mirror<br/>evidence: 5"]
+    D2 --> F2["F-2 traceability mirror - BUILT<br/>evidence: 5"]
     D3 --> F3["F-3 vacuity - BUILT<br/>evidence: 14 - dominant"]
     D4 --> F4["F-4 fresh verifier - BUILT<br/>evidence: 7"]
     D5 --> F5["F-5 capsules - BUILT<br/>evidence: 3"]
@@ -137,7 +141,7 @@ flowchart LR
     D9 --> F9["F-9 concurrency discipline<br/>evidence: 3"]
     D10 --> F10["F-10 guard liveness<br/>born of CMP-013/014"]
     D11 --> F11["F-11 decision propagation<br/>born of CMP-016"]
-    D12 --> F12["F-12 work queue<br/>evidence: CMP-011's cost line"]
+    D12 --> F12["F-12 work queue - BUILT<br/>evidence: CMP-011 cost line"]
     D13 --> F13["F-13 budget sense<br/>evidence: 555/630 false stalings"]
     LAW2["the lying tool - constitution C2/C3,<br/>law, not a candidate"]
 ```
