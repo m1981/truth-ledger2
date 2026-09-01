@@ -58,3 +58,4 @@
 {"cause": "tl2 grew: verify (CMP-007) made seven verbs eight", "id": "ret-99951b9b", "kind": "retraction", "retracts": "cap-8f239d15", "successor": "cap-dac82bd6", "ts": "2026-09-01T10:31:24Z"}
 {"cause": "gate-metrics gained the verify intake row", "id": "ret-6f6167d8", "kind": "retraction", "retracts": "cap-302ff966", "successor": "cap-e0a67de9", "ts": "2026-09-01T10:31:25Z"}
 {"cause": "tl2 grew: seven verbs became eight", "id": "ret-5ab43fb5", "kind": "retraction", "retracts": "cap-bcf1f736", "successor": "cap-8fc52d80", "ts": "2026-09-01T10:31:25Z"}
+{"anchor": "ea9889155620448a888b684ac1eecfd20a5f3671", "cmd": "grep -c 'Witnessed red' docs/governance/gate-metrics.md", "id": "cap-e78209a1", "output_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865", "sentence": "runbooks/purchase.md matches the metric register's witness discipline", "ts": "2026-09-01T10:33:37Z", "watch": ["docs/governance/gate-metrics.md", "docs/runbooks/purchase.md"]}

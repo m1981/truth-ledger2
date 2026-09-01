@@ -20,7 +20,7 @@ seeded red AND a recorded corpus test of plausible legitimate traffic.
 
 | `scripts/separation-canary` | engine-dev | CMP-010 | 2026-09-01 | 2026-09-01, two seeded leaks, each caught: an in-sandbox process opening an engine file → RED AUDIT (detector 1); a file created inside the engine repo → RED on two detectors at once (mtime sweep + status diff) | 2026-09-01: full client cycle (all seven verbs) in a sandbox → green, engine untouched, no out-of-sandbox opens. Declared limit: subprocess (git) reads untraced — compensated by the write detectors | 0 | 0 | 2026-12-31 |
 
-| `scripts/tl2 verify` (intake gate) | client | CMP-007 | 2026-09-01 | 2026-09-01, two seeded reports refused: one missing the marker AND the limit line (both REDs printed), one with an invalid verdict | 2026-09-01: a well-formed disagree report accepted; brief generated from a live capsule. Only intake gates (architecture §6.2); the verdict never does | 0 | 0 | 2026-12-31 |
+| `scripts/tl2 verify` (intake gate) | client | CMP-007 | 2026-09-01 | 2026-09-01, two seeded reports refused: one missing the marker AND the limit line (both REDs printed), one with an invalid verdict | 2026-09-01: a well-formed disagree report accepted; brief generated from a live capsule. Battle run same day (docs/verifications/cap-45714053-2026-09-01.md): fresh verifier agreed with the scoped sentence AND found a real author blind spot — the all-ASCII corpus is structurally incapable of triggering the live diacritics detector, and 6 of 8 invented legitimate messages naming Polish people/places were blocked. The ceremony paid on its first dispatch. Only intake gates (architecture §6.2); the verdict never does | 1 | 0 | 2026-12-31 |
 
 Counting rules:
 
