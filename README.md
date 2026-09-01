@@ -47,6 +47,8 @@ through complaints (constitution C1).
 7. `docs/market-memo.md` — why anyone would pay (non-normative)
 8. `docs/lexicon.md` — the dictionary: names things, justifies
    nothing (queried, not read)
-9. `docs/registers/prefixes.md` — identifier allocation
-10. `docs/complaints/README.md` — the door mechanisms enter through
-11. `AGENTS.md` — conduct for agents working here
+9. `docs/primer.md` — the borrowed discourse vocabulary, with usage
+   (companion to the lexicon)
+10. `docs/registers/prefixes.md` — identifier allocation
+11. `docs/complaints/README.md` — the door mechanisms enter through
+12. `AGENTS.md` — conduct for agents working here
