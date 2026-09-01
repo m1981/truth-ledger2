@@ -10,7 +10,10 @@ never load-bearing. Certainty, declared once for the whole file: the
 historical narrative is [S] by genre — standard history of the named
 disciplines, anchored in their canonical works — and every closing
 "→ W maszynerii" line is [I], an interpretive mapping onto this
-repository's mechanisms, a motif and not a finding.
+repository's mechanisms, a motif and not a finding. A reader without
+repo access should start at "Jak czytać ten plik" below — the mapping
+lines borrow the machinery's vocabulary and that section pays the
+loan.
 
 Language note: Polish prose body by design (the operator's language),
 English header only.
@@ -21,6 +24,40 @@ English header only.
   layer below.
 - **Update trigger**: a new tradition starts doing real work in the
   machinery.
+
+## Jak czytać ten plik
+
+Metafora pieniądza, raz na cały plik: w tym repozytorium „kupować"
+znaczy, że mechanizm lub reguła wchodzi wyłącznie w zamian za okazaną,
+zapisaną szkodę — więc „coś kupiło zapis" czytaj: „konkretna porażka
+uzasadniła jego istnienie". Cały plik prowadzi tę księgowość.
+
+Słowa domu, których używają linie „→ W maszynerii" — po jednym zdaniu,
+żeby dało się czytać bez dostępu do repozytorium:
+
+- **check** — komenda porównująca zapisane zdanie ze stanem
+  repozytorium.
+- **czerwień / zieleń** — oblany / zdany wynik sprawdzenia.
+- **zasiana czerwień** — celowo wprowadzony błąd, który sprawdzenie
+  MUSI oblać — dowód, że umie oblewać.
+- **korpus** — zestaw prawdziwego, niewinnego ruchu, który sprawdzenie
+  musi przepuścić.
+- **skarga** — zapisane zdarzenie szkody: jedyna waluta zakupu.
+- **ruling** — datowana decyzja operatora-człowieka.
+- **operator** — człowiek-właściciel; agenci wykonują, on orzeka.
+- **C1** — reguła: żaden mechanizm bez skargi.
+- **bramka** — sprawdzenie z prawem blokowania.
+- **probacja** — data, po której bramka bez trafień jest usuwana.
+- **martwe pole** — jawnie zadeklarowana klasa, której aparat nie umie
+  sprawdzać.
+- **SUSPECT** — status „nie ufaj, aż ktoś spojrzy".
+- **whisper** — ostrzeżenie doręczane w chwili sięgania po plik.
+- **L0/L1/L2** — piętra: zdania → strażnicy zdań → strażnicy
+  strażników.
+- **[S]/[M]/[I]** — etykiety pewności: standard / zmierzone /
+  interpretacja.
+
+Pełny słownik: docs/lexicon.md; mowa domu: docs/primer.md.
 
 ## Teza
 
@@ -83,7 +120,10 @@ Przełom XIX i XX wieku spróbował spłacić dług Sextusa jednym ruchem:
 zamienić sprawdzanie w rachunek. Frege zbudował w Grundgesetzach
 system, w którym arytmetyka miała wynikać z samej logiki — i w 1902
 roku, gdy drugi tom był w druku, list Russella wskazał klasę
-wszystkich klas nienależących do samych siebie. Samozwrotność nie
+wszystkich klas nienależących do samych siebie. To pętla w rodzaju
+katalogu wszystkich katalogów, które nie wymieniają samych siebie —
+czy ma wymienić sam siebie? Każda odpowiedź przeczy sobie.
+Samozwrotność nie
 była już figurą sceptyka, lecz pierwszą mechaniczną awarią aparatu:
 maszyneria zdań o zdaniach zapętliła się na zdaniu o sobie i stanęła.
 Program Hilberta odpowiedział ucieczką do przodu: dowieść
@@ -91,7 +131,10 @@ niesprzeczności matematyki środkami skończonymi, raz na zawsze.
 
 Gödel w 1931 roku pokazał, że ten program ma sufit: system
 dostatecznie silny, by mówić o arytmetyce, zawiera zdania prawdziwe a
-niedowodliwe, a własnej niesprzeczności nie dowiedzie. Ten wynik nie
+niedowodliwe, a własnej niesprzeczności nie dowiedzie. Sedno sztuczki:
+zdanie skonstruowane tak, by mówiło o sobie „nie mam dowodu w tym
+systemie"; jeśli system by je dowiódł, skłamałby — więc jest prawdziwe
+i niedowodliwe. Ten wynik nie
 był kapitulacją, lecz twierdzeniem: granica aparatu została wyznaczona
 środkami aparatu i odtąd należy do jego treści. Tarski dopełnił obraz
 od strony języka: predykatu prawdy dla języka nie da się bez
@@ -114,9 +157,9 @@ najuczciwszą metaforę konserwacji: żeglarze przebudowują statek na
 otwartym morzu, deska po desce, bez doku i bez fundamentu — naprawa
 zamiast obalenia, wymiana pod obciążeniem. Ten sam Neurath toczył
 realny spór z Tarskim o semantykę, bojąc się, że semantyczna teoria
-prawdy wpuści metafizykę z powrotem do nauki zjednoczonej; rację
-przyznano Tarskiemu, ale zostało zapisane, że nawet pojęcie prawdy
-wchodziło do nauki przez sprzeciw.
+prawdy wpuści metafizykę z powrotem do nauki zjednoczonej; praktyka
+nauki przyjęła ostatecznie definicję Tarskiego, ale w protokole epoki
+zostało, że nawet pojęcie prawdy wchodziło do nauki przez sprzeciw.
 
 Carnap przekuł resztę programu w rzemiosło eksplikacji: pojęcie mętne
 zastępuje się ścisłym, które robi tę samą robotę i daje się mierzyć.
@@ -140,7 +183,8 @@ twardego rdzenia.
 Dwudziesty wiek dopisał do teorii prawdy teorię roboty. Kotarbiński
 zbudował prakseologię — gramatykę sprawnego działania — i zostawił
 pojęcia brzmiące, jakby pisano je dla tego repozytorium:
-potencjalizacja, skutek przez udowodnioną gotowość zamiast wykonania;
+potencjalizacja, skutek przez udowodnioną gotowość zamiast wykonania
+(jak straż, która działa samą udowodnioną obecnością);
 preparacja warunków zamiast przymuszania wykonawcy; kunktacja, celowa
 zwłoka jako sprawność. Rdzeń jest jeden: najtańszy skutek to ten,
 którego nie trzeba było wymuszać.
@@ -151,10 +195,13 @@ planowi, lecz dzięki czujce, która mierzy odchył i oddaje go na
 wejście. Shannon przeciął informację od znaczenia: mierzy się sygnał,
 kanał i szum, nie pytając, co wiadomość znaczy — cięcie syntaktyki od
 semantyki, które dopiero uczyniło informację mierzalną. Toulmin
-rozebrał sam argument: dane, teza, warrant — licencja przejścia od
-danych do tezy — backing warrantu i defeater, warunek obalający
-wniosek mimo prawdziwych przesłanek. Po Toulminie argument ma
-anatomię, więc ma miejsca do badania.
+rozebrał sam argument na części i dał każdej nazwę: dane to „ulica
+jest mokra", teza to „padało", a warrant to licencja przejścia od
+danych do tezy — mokra ulica zwykle znaczy deszcz. Backing podpiera
+sam warrant (dane meteorologiczne za tym zwyczajem), a defeater to
+warunek obalający wniosek mimo prawdziwych przesłanek — chyba że
+przejechała polewaczka. Po Toulminie argument ma anatomię, więc ma
+miejsca do badania.
 
 → W maszynerii: potencjalizacja i kunktacja weszły tu z nazwiskiem
 Kotarbińskiego, czujka i SUSPECT są sprzężeniem zwrotnym Wienera nad
@@ -182,7 +229,8 @@ uwadze, któremu regułę można doręczyć nie przez wychowanie ani
 podręcznik, lecz w samej chwili działania. Stąd dwie warstwy, których
 ta genealogia nie zna z żadnego stulecia: reguła wstrzykiwana w
 moment, w którym ręka już sięga po plik, oraz łańcuchy podejrzliwości
-rozpięte nad zdaniami modeli — bo po raz pierwszy strażnik czyta
+(SUSPECT z glosariusza wyżej) rozpięte nad zdaniami modeli (modeli
+językowych AI) — bo po raz pierwszy strażnik czyta
 autora produkującego płynne zdania szybciej, niż ktokolwiek je
 sprawdza.
 
