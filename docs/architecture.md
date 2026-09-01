@@ -99,12 +99,14 @@ Every executable check is labeled at birth (constitution C6):
 - **`engine-dev`** — polices this repository's own development; never
   installs.
 
-The boundary will be made falsifiable by a separation canary (candidate
-F-7): install the client tier into a sandbox with no access to the
-engine repository, run every client-tier verb that exists at run time,
-trace file access; any read outside the sandbox is red. Until that
-canary is bought and built, the boundary is a declared intention, and
-this sentence is the honest record of that gap.
+The boundary is falsifiable since 2026-09-01:
+`scripts/separation-canary` (first F-7 instance, bought by CMP-010)
+installs the client tier into a sandbox, runs every verb that exists
+at run time, and reds on any access outside it — three independent
+detectors (audit hook, mtime sweep, status diff), with the subprocess
+read limit declared in its header. It is invoked manually before
+release tagging; nothing automates that yet, and this sentence is the
+honest record of the remaining gap.
 
 ## 5. Version boundary
 

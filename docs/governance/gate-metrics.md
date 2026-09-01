@@ -18,6 +18,8 @@ seeded red AND a recorded corpus test of plausible legitimate traffic.
 | `scripts/tl2 mirror` | client | CMP-005 | 2026-09-01 | 2026-09-01, seeded fixture: a manifest id cited nowhere → GAP, a cited id absent from the manifest → ORPHAN, both red (exit 1); re-witnessed at v0.1.1 on a two-family corpus: sibling ignored, own GAP and same-family ORPHAN still red | 2026-09-01: matched three-id fixture → clean; v0.1.1: two-family fixture with sibling present → clean | 0 | 28 (first run at installation #2: the unscoped cited-set flagged sibling spec families in shared roots — slug-scoping, an amendment v1's falsification round had already named, was missing; fixed same hour in v0.1.1. The birth corpus had one family — too narrow, the jest lesson repeated) | 2026-12-31 |
 | `scripts/tl2 ready` | client | CMP-018 | 2026-09-01 | 2026-09-01, seeded fixture: one suspect capsule, one open complaint, one overdue probation, one due-soon probation — all four listed | 2026-09-01: empty fixtures → "nothing ready", exit 0. Advisory: never blocks; "red" means "lists what it must, silent when there is nothing" | 0 | 0 | 2026-12-31 |
 
+| `scripts/separation-canary` | engine-dev | CMP-010 | 2026-09-01 | 2026-09-01, two seeded leaks, each caught: an in-sandbox process opening an engine file → RED AUDIT (detector 1); a file created inside the engine repo → RED on two detectors at once (mtime sweep + status diff) | 2026-09-01: full client cycle (all seven verbs) in a sandbox → green, engine untouched, no out-of-sandbox opens. Declared limit: subprocess (git) reads untraced — compensated by the write detectors | 0 | 0 | 2026-12-31 |
+
 Counting rules:
 
 - A catch is a rejected message that was genuinely Polish; a false

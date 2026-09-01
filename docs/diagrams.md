@@ -75,7 +75,7 @@ flowchart LR
     end
     TL2 -- "same public surface (C4)<br/>no private doors" --> S1
     TL2 -- "pinned tagged release" --> SN
-    SEP["F-7 separation canary<br/>DESIGNED - declared gap"] -.->|"will prove"| INSTN
+    SEP["F-7 separation canary - BUILT<br/>scripts/separation-canary"] -->|"proves, before each tag"| INSTN
     PREFIX["prefix register"] -- "one prefix per installation (C5)" --> INSTN
 ```
 
@@ -132,7 +132,7 @@ flowchart LR
     D4 --> F4["F-4 fresh verifier<br/>evidence: 7"]
     D5 --> F5["F-5 capsules - BUILT<br/>evidence: 3"]
     D6 --> F6["F-6 criticality tiers<br/>evidence: 4, incl. 555/630 false alarms"]
-    D7 --> F7["F-7 separation canary<br/>evidence: 4"]
+    D7 --> F7["F-7 separation canary - BUILT<br/>evidence: 4"]
     D8 --> F8["F-8 whisper - BUILT<br/>evidence: 2, consumer-validated"]
     D9 --> F9["F-9 concurrency discipline<br/>evidence: 3"]
     D10 --> F10["F-10 guard liveness<br/>born of CMP-013/014"]

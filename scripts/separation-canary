@@ -1,0 +1,173 @@
+#!/usr/bin/env python3
+"""separation-canary — proves the engine/installation boundary (F-7).
+
+tier: engine-dev (polices this repository's releases; never installs)
+Bought by: CMP-010 (v1's canary, run from a linked worktree, wrote into
+the real repository: hooks deleted, bare=true, false authors in
+published history). Metric row: docs/governance/gate-metrics.md.
+
+What it proves: the client tier, installed into a sandbox with no
+business outside it, runs every verb that exists at run time and
+touches nothing beyond the sandbox. Three independent detectors:
+
+1. AUDIT — a Python audit hook inside each verb's process records
+   every file open under the user's home directory (which contains the
+   engine repository) that is not under the sandbox.
+2. MTIME SWEEP — any file in the engine repository newer than a marker
+   set before the run (the .git directory excluded) is a write escape,
+   the literal CMP-010 harm.
+3. STATUS — `git status --porcelain` of the engine repository must be
+   byte-identical before and after.
+
+Declared limits, honestly: the audit hook traces only the tl2
+process's own opens — subprocess access (git) is untraced, compensated
+by detectors 2-3, which see writes but not reads. Invoked manually
+before release tagging; nothing automates it yet, and this sentence is
+the honest record of that gap.
+
+Seeded-fault modes for C2 witnesses: --seed-read opens an engine file
+from inside the sandboxed process (detector 1 must fire); --seed-write
+creates a file inside the engine repository (detector 2 must fire;
+the seed is removed after detection).
+"""
+import os
+import subprocess
+import sys
+import tempfile
+
+ENGINE = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+
+WRAPPER = r'''
+import os, runpy, sys
+sandbox, home, log = (os.path.realpath(p) for p in sys.argv[1:4])
+def hook(event, args):
+    if event != "open":
+        return
+    p = args[0]
+    if not isinstance(p, (str, bytes)):
+        return
+    if isinstance(p, bytes):
+        p = p.decode(errors="replace")
+    rp = os.path.realpath(p)
+    if rp.startswith(home + os.sep) and not rp.startswith(sandbox + os.sep):
+        with open(log, "a") as fh:
+            fh.write(rp + "\n")
+sys.addaudithook(hook)
+target = sys.argv[4]
+sys.argv = sys.argv[4:]
+try:
+    runpy.run_path(target, run_name="__main__")
+except SystemExit as e:
+    raise SystemExit(e.code or 0)
+'''
+
+
+def sh(cmd, cwd):
+    return subprocess.run(cmd, shell=True, cwd=cwd,
+                          capture_output=True, text=True)
+
+
+def run_verb(sandbox, log, argv):
+    home = os.path.expanduser("~")
+    cmd = [sys.executable, "-c", WRAPPER, sandbox, home, log,
+           os.path.join(sandbox, "scripts", "tl2")] + argv
+    return subprocess.run(cmd, cwd=sandbox, capture_output=True, text=True)
+
+
+def main():
+    seed = sys.argv[1] if len(sys.argv) > 1 else None
+    home = os.path.expanduser("~")
+    status_before = sh("git status --porcelain", ENGINE).stdout
+    marker = tempfile.NamedTemporaryFile(delete=False)
+    marker.close()
+    sandbox = os.path.realpath(tempfile.mkdtemp(prefix="sep-canary-"))
+    log = os.path.join(sandbox, "audit.log")
+    red = []
+    try:
+        # Install the client tier and build a minimal consumer fixture.
+        os.makedirs(os.path.join(sandbox, "scripts"))
+        with open(os.path.join(ENGINE, "scripts", "tl2")) as src, \
+                open(os.path.join(sandbox, "scripts", "tl2"), "w") as dst:
+            dst.write(src.read())
+        for cmd in ("git init -q", "git config user.email c@sandbox",
+                    "git config user.name canary"):
+            sh(cmd, sandbox)
+        open(os.path.join(sandbox, "man.txt"), "w").write("SC-can-001\n")
+        os.makedirs(os.path.join(sandbox, "tests"))
+        open(os.path.join(sandbox, "tests", "t.py"), "w").write(
+            '"""SC-can-001"""\n')
+        open(os.path.join(sandbox, "code.py"), "w").write(
+            "def f(x):\n    return x + 2  # seeded bug\n")
+        sh("git add -A && git commit -qm base", sandbox)
+        open(os.path.join(sandbox, "code.py"), "w").write(
+            "def f(x):\n    return x + 1\n")
+        open(os.path.join(sandbox, "test_new.py"), "w").write(
+            "import sys\ntry:\n    from code import f\n"
+            "except ImportError:\n    sys.exit(2)\nassert f(1) == 2\n")
+
+        if seed == "--seed-read":
+            run_verb(sandbox, log, ["check"])  # arm the hook lane once
+            probe = os.path.join(sandbox, "probe.py")
+            open(probe, "w").write(
+                "open(%r).read(1)\n" % os.path.join(ENGINE, "README.md"))
+            subprocess.run([sys.executable, "-c", WRAPPER, sandbox, home,
+                            log, probe], cwd=sandbox, capture_output=True)
+        elif seed == "--seed-write":
+            seed_path = os.path.join(ENGINE, ".separation-canary-seed")
+            open(seed_path, "w").write("seed\n")
+        else:
+            cycle = [
+                ["capsule", "sandbox sentinel", "--cmd",
+                 "wc -l < man.txt", "--watch", "man.txt"],
+                ["check"],
+                ["whisper", "man.txt"],
+                ["mirror", "--manifest", "man.txt", "--root", "tests"],
+                ["vacuity", "--test", "test_new.py", "--run",
+                 sys.executable + " test_new.py"],
+                ["ready"],
+            ]
+            cap_id = None
+            for argv in cycle:
+                r = run_verb(sandbox, log, argv)
+                if argv[0] == "capsule" and r.returncode == 0:
+                    cap_id = r.stdout.split()[1]
+                if r.returncode != 0:
+                    red.append("verb %s exited %d: %s" % (
+                        argv[0], r.returncode, (r.stderr or r.stdout)[-200:]))
+            if cap_id:
+                r = run_verb(sandbox, log, ["retract", cap_id, "--cause",
+                                            "canary cycle complete"])
+                if r.returncode != 0:
+                    red.append("verb retract exited %d" % r.returncode)
+
+        # Detector 1: audit log.
+        if os.path.exists(log) and open(log).read().strip():
+            for line in sorted(set(open(log).read().split())):
+                red.append("AUDIT: sandboxed process opened %s" % line)
+        # Detector 2: mtime sweep over the engine repo.
+        swept = sh("find . -newer %s -not -path './.git/*' -type f"
+                   % marker.name, ENGINE).stdout.strip()
+        if swept:
+            for line in swept.splitlines():
+                red.append("WRITE ESCAPE: %s newer than the marker" % line)
+        # Detector 3: engine status unchanged.
+        if sh("git status --porcelain", ENGINE).stdout != status_before:
+            red.append("STATUS: engine repository status changed")
+    finally:
+        seed_path = os.path.join(ENGINE, ".separation-canary-seed")
+        if os.path.exists(seed_path):
+            os.unlink(seed_path)
+        os.unlink(marker.name)
+        import shutil
+        shutil.rmtree(sandbox, ignore_errors=True)
+    if red:
+        for r in red:
+            print("RED  %s" % r)
+        return 1
+    print("separation-canary: green — full client cycle ran in the "
+          "sandbox; engine repository untouched, no out-of-sandbox opens")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
