@@ -69,6 +69,13 @@ path, names every capsule watching it; non-plain classes tagged and
 spoken in full, plain budgeted to three lines (`--all` lifts). Fail-open:
 never blocks, never errors on content.
 *Implementation:* prefix match over capsule watch-lists + tiers file.
+*Declared gap:* delivery today is runbook prose — the agent calls
+whisper by discipline; the harness pre-edit wiring F-8 designed (a
+PreToolUse hook injecting the warning automatically) is a hook, so C1
+holds: it awaits the first edit that hurt because whisper was skipped.
+Until then this sentence is the honest record — and the irony is
+named: F-8's own mechanism is delivered by the channel F-8 exists to
+replace.
 
 **Ready** (F-12; verb `ready`).
 *Does:* the derived queue — open complaints, probation countdowns
