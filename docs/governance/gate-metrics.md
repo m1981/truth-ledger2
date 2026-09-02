@@ -51,6 +51,14 @@ Counting rules:
   (its shape there: overrides carry *expiring* justifications, forcing
   re-justification). Until a complaint buys better, this sentence is
   the honest record of that gap.
+- **A witness whose seed is not a committed artifact is
+  re-witnessable only by reconstruction** — declared gap: most C2
+  witness cells above are prose descriptions of what was seeded, not
+  replayable committed seeds. Added by the 2026-09-01 external
+  standards audit (operator-ruled fix package).
+- **This table is self-reported by the same agents it measures**:
+  nothing detects an unrecorded event. An integrity disclosure, not a
+  counting rule — the register counts only what reaches it.
 - **A fresh clone runs no gate at all**: `core.hooksPath` is local git
   config, set per machine by `git config core.hooksPath
   scripts/githooks`. Nothing installs it and nothing detects its

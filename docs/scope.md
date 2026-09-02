@@ -59,6 +59,20 @@ catch-log records and is cited here unverified (AGENTS.md rule 8).
 Nothing this system will ever ship can say the work was good — only
 that the record of it still corresponds.
 
+## Erratum (operator ruling of 2026-09-01, delegated via "Zlec subagentowi"; external standards audit)
+
+Two corrections of attribution; neither changes the boundary:
+
+- "In ISO/IEC/IEEE 12207 terms it sits **below** the baseline": 12207
+  genuinely supplies the verification/validation distinction, and
+  "verification, not validation" stands. "Below the baseline" is
+  **house vocabulary**, not a 12207 construct — baselines in 12207 are
+  configuration-management reference points, not a rigor scale. Read
+  that sentence as the house image it is.
+- The Dijkstra epigraph's date may be read "1969/1970" (the remark
+  appears in the 1969 conference material and the 1970 *Notes on
+  Structured Programming*).
+
 ## What "in scope" means operationally
 
 A question of the form "is X in scope?" is answered by this file, not by

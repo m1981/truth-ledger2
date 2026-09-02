@@ -16,17 +16,24 @@ recompute from zero, and quiet on legitimate traffic — everything
 judgment-shaped or expensive stays with humans or is refused (this is
 scope R2 + constitution C2/C3 read as one sentence; it came from the
 measured IV&V verdict on v1: *the mechanical part is stronger than the
-independent-agent part*).
+independent-agent part*). The corpus half of C2 has an earned kinship:
+alarm-management rationalization practice (ISA-18.2) judges a detector
+against realistic legitimate traffic before it may block.
 
 ## Position: what is actually new here
 
 Almost every mechanism in this system has a 15–70 year pedigree
 (in-toto/SLSA provenance, DOORS suspect links, fault seeding, event
-sourcing, alarm rationalization). The pedigree analysis of v1
-identified exactly one genuinely new thing: **suspect-links over
-sentences produced by LLM agents** — candidate F-5's territory. Nobody
-applied configuration-audit discipline to *what a model claims about a
-repository*. In the era of agent-written code, the failure mode "a
+sourcing, alarm rationalization, doctest's re-verified documentation
+sentences — 1999: a documentation sentence carrying an evidence
+command, re-run — snapshot/golden-file testing, and make-style
+dependency staleness). The pedigree analysis of v1 identified exactly
+one genuinely new thing: **suspect-links over sentences produced by
+LLM agents** — candidate F-5's territory. What is new is the
+*composition* — sentence + recorded command + output hash + VCS
+anchor + recomputed suspicion — applied to a model's free-prose
+assertions about a repository. In the era of agent-written code, the
+failure mode "a
 confident, stale assertion with no record of how it was produced" only
 grows. F-5 is the market position; everything else is the credible
 apparatus around it.
@@ -37,11 +44,14 @@ in one demo. F-5 differentiates; F-2 carries.
 
 **The second differentiator** is candidate F-8 (whisper): pushing
 "these sentences watch the file you are about to touch" into the
-agent's context at the moment of action — a mechanism no standard
-conceives, because standards never had an actor whose attention is
-programmable. Its natural sales channel is integration with agent
-harnesses (hooks), which is also where the buyers of vector 1 already
-live.
+agent's context at the moment of action. No standard conceives the
+*actor*; operations practice already conceived the *delivery* —
+state-based (dynamic) alarming (ISA-18.2/EEMUA-191), electronic
+checklists, and computer-based procedures deliver the rule at the
+moment and state of action. What remains new is an actor whose
+attention is a writable context. Its natural sales channel is
+integration with agent harnesses (hooks), which is also where the
+buyers of vector 1 already live.
 
 ## The measured order (correction of 2026-09-01)
 
@@ -102,7 +112,9 @@ per-task billing. What this implies:
   (`docs/runbooks/`), delivered at the moment of action and
   capsule-guarded against rot, never narrative (v1's process document
   decayed to "prose no code invokes" `[M]`). Provenance `[S]`:
-  SOP/runbook practice, the checklist tradition, DO-178's SDP — and
+  SOP/runbook practice; from DO-178, the plans-define-processes
+  inheritance (the checklist FORM is aviation-operational practice —
+  normal/non-normal checklists — not the SDP) — and
   Kotarbiński's praxeology, two of whose concepts this system had
   been practicing without the name: **potencjalizacja** (an effect
   achieved by real, proven readiness rather than constant action —

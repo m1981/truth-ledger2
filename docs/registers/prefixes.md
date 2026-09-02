@@ -1,8 +1,10 @@
 # Prefix register — the single allocation authority for identifier spaces
 
 Per constitution C5: no identifier space exists before a row here.
-ISO/IEC 11179's move applies: the registry is itself registered — it is
-the first row of its own table, so its own staleness is somebody's job.
+In the spirit of ISO/IEC 11179's self-describing registry (this
+register does not implement 11179): the registry is itself registered —
+it is the first row of its own table, so its own staleness is
+somebody's job.
 
 | Prefix / space | Meaning | Allocated | Status |
 |---|---|---|---|

@@ -15,3 +15,10 @@
    installation stays on the older tag.
    *Done when:* every installations-table row names either the new tag
    or a dated reason.
+
+Declared gap (2026-09-01 standards audit): known-defect notification
+to pinned installations is manual and unguaranteed — the
+service-bulletin/airworthiness-directive concept is not transplanted
+(priced in candidates' "Not transplanted"). Measured once:
+installation #2 stayed pinned at v0.1.1 while a known mirror blindness
+(CMP-020) existed until v0.1.2, mitigated by hand.

@@ -100,7 +100,7 @@ definition.
 
 **Kupno / waluta zakupu** — jedyna legitymacja mechanizmu: skarga, kontrasygnowana.
 
-**Kwalifikacja narzędzia (DO-330)** — obowiązek dowodu dla narzędzia, któremu ufa się bez sprawdzania.
+**Kwalifikacja narzędzia (DO-330)** — obowiązek dowodu dla narzędzia, któremu ufa się bez sprawdzania — ściślej: którego wynik ma zwalniać z innej weryfikacji (ten warunek DO-330 stawia wprost). Zdanie „LLM-a nie da się kwalifikować" jest wnioskiem tego repozytorium [I], nie zdaniem DO-330 — uzasadnienie: kwalifikacja zakłada narzędzie deterministyczne o ograniczonym zachowaniu, a rozkład wyjść LLM-a nie spełnia żadnej z tych przesłanek.
 
 **Ledger** — append-only rejestr twierdzeń; stan nigdy nie jest przechowywany, zawsze wyliczany z zapisów.
 

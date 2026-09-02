@@ -1,6 +1,9 @@
 # Runbook: the fresh-context verifier (F-4)
 
-The one axis of independence an LLM can supply is **context** — never
+A fresh session supplies the *rationale* of IEEE 1012 technical
+independence — a fresh viewpoint — while supplying none of 1012's
+three axes (technical, managerial, financial): in 1012's frame it is
+the same tool. What it buys is independence of **context** — never of
 failure (architecture §6.4; this founding measured a same-model
 adversary missing the three best findings). The economics are v1's:
 98.5% empty "agree", 1.5% hit rate overall `[unverified here — v1

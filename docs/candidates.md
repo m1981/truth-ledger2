@@ -53,7 +53,8 @@ two reviews independently killed that.
 
 **Transplants:** requirements analysis, the cheapest defect source in
 IV&V (a requirements defect found at requirements costs 1×; at test,
-10–50×; in production, 100×+).
+10–50×; in production, 100×+ — Boehm-lineage figures, contested in
+later empirical literature; order-of-magnitude only).
 
 **Scope bridge (to be ruled at purchase, not before):** scope asks one
 question — correspondence — and F-1 inspects a sentence before any
@@ -91,8 +92,9 @@ mechanical layer as scoped is empty on real traffic.
 
 ## F-2 — Bidirectional traceability mirror
 
-**Transplants:** bidirectional traceability (DO-178C §6.4.4.3 doctrine,
-IEEE 29148) at grep weight. Inherited from the v1 spec-coverage pilot —
+**Transplants:** bidirectional traceability (DO-178C trace-data
+doctrine; bidirectional traceability per ISO/IEC/IEEE 29148) at grep
+weight. Inherited from the v1 spec-coverage pilot —
 a history **unverified in this repository** and re-falsified at build
 time, not trusted on citation.
 
@@ -142,8 +144,12 @@ supposedly-covering test missed.
 
 ## F-4 — Fresh-context verifier
 
-**Transplants:** the one axis of IEEE 1012 independence an LLM can
-actually supply: independence of **context**.
+**Transplants:** the *rationale* of IEEE 1012 technical independence —
+a fresh viewpoint on the work — while supplying none of 1012's three
+independence parameters: technical, managerial, financial. In 1012's
+frame a fresh session of the same model is the same tool; what F-4
+buys is independence of the author's **context**, which 1012 does not
+name as an axis.
 
 **Mechanics sketch.** A claim marked for verification is handed to a
 fresh LLM session inheriting nothing from the author: the claim, its
@@ -171,8 +177,9 @@ is invalid.
 **Buyer class:** an author-verified claim later proven false — the
 author's own confirmation was the failing control.
 
-**Refuses:** claiming IEEE-1012 independence (organizational and
-financial axes are structurally absent and declared so, not simulated).
+**Refuses:** claiming IEEE 1012 independence (all three axes —
+technical, managerial, financial — are structurally absent and
+declared so, not simulated).
 
 ## F-5 — Evidence capsules + suspect projection
 
@@ -246,12 +253,16 @@ repository, or a client artifact found depending on an engine-dev file.
 
 ## F-8 — Whisper (pre-edit warning)
 
-**Transplants:** nothing from any standard — this is v1's own invention.
-DOORS-style suspect links report *after the fact* to a human reading a
-report; whisper injects "these sentences watch the file you are about
-to touch" **into the actor's context at the moment of action**. No
-standard conceives it, because no standard ever had an actor whose
-attention is programmable. It is also the direct remedy for CMP-001's
+**Transplants:** the *actor* comes from no standard — that half is
+v1's own invention — but the *delivery* has ancestors: state-based
+(dynamic) alarming (ISA-18.2/EEMUA-191), electronic checklists, and
+computer-based procedures all deliver the rule at the moment and state
+of action. DOORS is closer than a batch report too: it surfaces
+suspect-link flags in the module view at read/edit time. The honest
+contrast is pull versus push — DOORS shows suspicion to a human who
+opens the module; whisper writes it into an actor's context that is
+being constructed. What remains new is an actor whose attention is a
+writable context. It is also the direct remedy for CMP-001's
 root cause: a prose rule does not bind an agent that is not re-reading
 it at the moment of acting — whisper makes the moment of acting carry
 the rule.
@@ -411,6 +422,19 @@ rewrite, and restored by operator ruling of 2026-08-31):
   played by C3 probation (gates die by their own record) and the
   operator's rulings.
 - **Validation and process assurance** — scope R1 and R4.
+- **Archive, retention, and backup** (DO-178C SCM's
+  archive/retrieval/release concept) — not built; priced by operator
+  ruling, 2026-09-01, after an external standards audit. The declared
+  reliance is git remotes (the github origin). Named honestly: a
+  repository whose entire value is "the record still corresponds"
+  names loss of the record as its own worst hazard, and it declares
+  this reliance instead of pricing a mechanism.
+- **Service bulletins / airworthiness directives** — known-defect
+  notification to pinned installations is manual and unguaranteed
+  (declared in the release runbook, same audit). Measured once:
+  installation #2 stayed pinned at v0.1.1 while a known mirror
+  blindness (CMP-020) existed until v0.1.2; the mitigation happened
+  by hand, exactly once.
 - **Classic ADR corpus** (priced by operator ruling, 2026-09-01, after
   the absence was caught undeclared) — refused: v2 records decisions
   at their point of force — complaint dispositions, ruling lines,

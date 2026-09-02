@@ -50,8 +50,9 @@ suspect iff `git` shows any of its watched paths changed since its
 anchor. v1 stored suspicion as events; v2 computes it, because git
 already holds the answer.
 
-Three failure modes of this projection are named here so nobody
-discovers them as surprises:
+Three failure modes of this projection were named at ratification so
+nobody discovers them as surprises; a fourth was added by dated
+erratum (see mode 4):
 
 1. **Unreachable anchor.** After a history rewrite (rebase, force-push,
    aggressive GC) the anchor commit may not resolve. The disposition is
@@ -72,6 +73,14 @@ discovers them as surprises:
    for exactly this channel and also measured its cost (inert expiry
    records, ceremony); v2 declines it until a complaint buys it, and
    until then this sentence is the honest record of that channel.
+4. **Engine-version semantics.** *(Erratum addition — operator ruling
+   of 2026-09-01, delegated via "Zlec subagentowi", after an external
+   standards audit.)* A capsule does not record the engine version
+   that produced it, so what a check *means* can drift across engine
+   versions — the CMP-020 class: `mirror`'s citation semantics changed
+   between v0.1.1 and v0.1.2, and no capsule can say which semantics
+   blessed it. Declared until a complaint buys the field; until then
+   this sentence is the honest record of that gap.
 
 ## 3. Public surface
 
@@ -126,9 +135,16 @@ Consequences, binding on every candidate in `docs/candidates.md`:
    `proposed-by: llm`, carrying the model identity and the prompt that
    produced it, and stays a proposal until a human accepts it or a
    mechanical check subsumes it.
-3. Rationale, transplanted from DO-330: a tool whose output you trust
-   without checking requires qualification; an LLM cannot be qualified;
-   therefore an LLM output is never trusted without checking.
+3. Rationale: the first premise is transplanted from DO-330 — a tool
+   whose output you trust without checking requires qualification.
+   That an LLM cannot be qualified is this repository's inference
+   `[I]`, not DO-330's sentence — warrant: DO-330 qualification
+   presumes a deterministic tool with bounded behavior, and an LLM's
+   output distribution satisfies neither premise. Elided condition,
+   restored: DO-330 requires qualification only when a tool's output
+   is used to *eliminate* other verification — which is exactly the
+   use this rule forbids. Therefore an LLM output is never trusted
+   without checking.
 4. Declared limit of LLM review: two instances of the same model are
    independent in **context**, not in **failure** — a fresh reviewer
    inherits none of the author's rationalizations but shares the author

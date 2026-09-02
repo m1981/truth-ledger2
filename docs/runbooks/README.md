@@ -3,8 +3,10 @@
 Processes are the category the document layers were missing: not law,
 not reasoning, not direction, not state — **ordered, repeatable
 sequences with verification points**. Provenance `[S]`: SOP/runbook
-practice, the checklist tradition (Gawande), DO-178's SDP, ISO 9001
-documented procedures, and Kotarbiński's praxeology.
+practice, ISO 9001 documented procedures, and Kotarbiński's
+praxeology; from DO-178, the plans-define-processes inheritance; the
+checklist FORM is aviation-operational practice (normal/non-normal
+checklists — Gawande's tradition), not the SDP.
 
 Form rules, priced by measurement:
 
