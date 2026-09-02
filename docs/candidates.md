@@ -380,6 +380,21 @@ found blocked invisibly behind finished work.
 **Refuses:** being a plan. The queue orders what exists; priorities
 stay with the memo and the operator; it never invents work.
 
+**Measured inheritance map (2026-09-02 beads-vs-wk study, anchors in
+the session record):** when F-12 grows past `tl2 ready`, it inherits
+from beads the DELIVERY and the DECOUPLED STORE (memories injected at
+SessionStart via `bd prime --hook-json` — the shipped QB-013 remedy;
+a work store separate from the fact log, proven by the freeze: beads
+kept writing after the ledger died) and from v1's wk- kernel the
+SEMANTICS (premise-at-birth links; one premise-validity filter applied
+uniformly over ANY tracker source, printing `HELD <id> broken
+premises:` — beads alone cannot know a fact went stale; executable
+acceptance oracles screened by allowlist; G12-grade human-only
+terminal acts). The strongest single lesson cuts against prose again:
+v1 *designed* a session digest and never shipped it — delivery
+documented is not delivery. Known trap: the beads-seam precedence
+(filing one native issue silently deposes the `bd ready` default).
+
 ## F-13 — Budget sense
 
 **Origin: operator ruling, 2026-09-01** (same taxonomy). Anchored
