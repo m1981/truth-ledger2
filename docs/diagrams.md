@@ -68,7 +68,7 @@ stateDiagram-v2
 ```mermaid
 flowchart LR
     subgraph ENGINE["ENGINE - stateless, tagged releases only"]
-        TL2["scripts/tl2<br/>verbs: capsule, check, vacuity, whisper, retract,<br/>mirror, ready, verify, lint"]
+        TL2["scripts/tl2<br/>verbs: capsule, check, vacuity, whisper, retract,<br/>mirror, ready, verify, lint, work"]
         DEVGATES["engine-dev gates<br/>(commit-msg hook)<br/>never install"]
     end
     subgraph INST1["INSTALLATION #1 - this repo (dogfood)"]
