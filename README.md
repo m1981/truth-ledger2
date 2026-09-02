@@ -38,19 +38,21 @@ through complaints (constitution C1).
    each priced by a named failure)
 3. `docs/architecture.md` — engine, installations, the LLM rule
 4. `docs/candidates.md` — designed candidates, none of them promises
-5. `docs/runbooks/` — the choreographies: how a purchase, a
+5. `docs/mechanisms.md` — the architect's inventory: what each level
+   does, implemented how, watched by whom
+6. `docs/runbooks/` — the choreographies: how a purchase, a
    maintenance loop, a session, a consumer installation, and a
    release are actually run (checklists, capsule-guarded)
-6. `docs/diagrams.md` — the system in five cross-sections
+7. `docs/diagrams.md` — the system in five cross-sections
    (capsule-guarded; run `./scripts/tl2 whisper docs/diagrams.md`
    before editing it or its sources)
-7. `docs/market-memo.md` — why anyone would pay (non-normative)
-8. `docs/lexicon.md` — the dictionary: names things, justifies
+8. `docs/market-memo.md` — why anyone would pay (non-normative)
+9. `docs/lexicon.md` — the dictionary: names things, justifies
    nothing (queried, not read)
-9. `docs/primer.md` — the borrowed discourse vocabulary, with usage
+10. `docs/primer.md` — the borrowed discourse vocabulary, with usage
    (companion to the lexicon)
-10. `docs/genealogy.md` — where the moves came from: meta-layers
+11. `docs/genealogy.md` — where the moves came from: meta-layers
     bought crisis by crisis (dictionary family)
-11. `docs/registers/prefixes.md` — identifier allocation
-12. `docs/complaints/README.md` — the door mechanisms enter through
-13. `AGENTS.md` — conduct for agents working here
+12. `docs/registers/prefixes.md` — identifier allocation
+13. `docs/complaints/README.md` — the door mechanisms enter through
+14. `AGENTS.md` — conduct for agents working here
