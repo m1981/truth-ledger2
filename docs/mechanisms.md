@@ -23,6 +23,12 @@ even uncommitted → SUSPECT; re-run hash differs → STALE. Nothing is
 stored but the records; status is always a projection.
 *Implementation:* append-only JSONL (`capsules.jsonl`) + `git
 diff/status/cat-file` at read time.
+*Two defining absences, both cut from the founding idea by
+measurement:* no clock — elapsed-time demotion (v1's TTL) was the
+false-alarm engine and is a declared dead zone until a complaint buys
+it; and no inferred relevance — the invalidation scope is DECLARED by
+the author (watched paths), never guessed by the engine, because v1's
+relevance-guessing scan measured 16 firings, 0 correct.
 *Observed by:* its own metric row; the maintenance-loop runbook guard
 watches the verbs' source.
 
@@ -131,4 +137,6 @@ dictionary stays non-normative.
 L0 pins what is true; L1 checks that work keeps its promises; L2
 checks the checkers — and every mechanism on this page was bought by a
 named harm, witnessed both ways, and is counted in the register that
-can also kill it.
+can also kill it. The founding idea (a cache-invalidation system for
+agent-asserted sentences) survives as L0's capsule — and L2 exists
+because the system stopped exempting that idea from itself.
