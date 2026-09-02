@@ -43,7 +43,7 @@ through complaints (constitution C1).
 6. `docs/runbooks/` — the choreographies: how a purchase, a
    maintenance loop, a session, a consumer installation, and a
    release are actually run (checklists, capsule-guarded)
-7. `docs/diagrams.md` — the system in five cross-sections
+7. `docs/diagrams.md` — the system in six cross-sections
    (capsule-guarded; run `./scripts/tl2 whisper docs/diagrams.md`
    before editing it or its sources)
 8. `docs/market-memo.md` — why anyone would pay (non-normative)

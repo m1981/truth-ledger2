@@ -1,4 +1,4 @@
-# Diagrams — the system as designed, in five cross-sections
+# Diagrams — the system as designed, in six cross-sections
 
 A dated snapshot (2026-09-01). Diagrams rot the way review documents
 do (CMP-002), so this file is **guarded by capsules**: before editing
@@ -144,4 +144,50 @@ flowchart LR
     D12 --> F12["F-12 work queue - BUILT<br/>evidence: CMP-011 cost line"]
     D13 --> F13["F-13 budget sense<br/>evidence: 555/630 false stalings"]
     LAW2["the lying tool - constitution C2/C3,<br/>law, not a candidate"]
+```
+
+## 6. The execution flow — who calls what, when, and with what mind
+
+Three kinds of executor, one honest split: **M** = machine
+(deterministic verb or hook; same input, same answer), **LLM** = model
+judgment (proposes, orchestrates, never decides alone), **H** = human
+(rules, countersigns, disposes). The pattern everywhere: M extracts
+and gates shape, LLM judges and drafts, H decides — architecture §6 in
+motion.
+
+| Stage | Trigger (who calls) | What runs | Mind | Blocks? |
+|---|---|---|---|---|
+| Session open | harness auto-loads CLAUDE.md | read order → `tl2 ready` | M lists, LLM picks | no |
+| Before any edit | agent, by runbook | `tl2 whisper <paths>` (+ tiers tags/budget) | M speaks, LLM heeds | no (fail-open) |
+| The edit itself | agent | code/spec/doc work | LLM | — |
+| New promise in a spec | agent | `lint --brief` → fresh session judges → `lint --intake` → operator accepts into spec | M → LLM → M → H | intake gates shape only |
+| New/changed test | agent | `tl2 vacuity` (PROVEN / GREEN-ON-BOTH / INCONCLUSIVE) | M verdicts | advisory exits |
+| Sentence worth trusting | agent | `tl2 capsule` files the receipt | M | no |
+| Doubted sentence | agent, by verifier runbook criteria | `verify --brief` → fresh session re-derives → `verify --intake` → operator disposes | M → LLM → M → H | intake gates shape; verdict never |
+| Commit | **git calls the hook itself** | commit-msg gate (≥2 diacritic words) | M | **yes** |
+| Watched source changed | agent, by maintenance-loop runbook | commit → successor capsule → `retract --successor` → `check` green | LLM orchestrates, M executes each step | check exit informs |
+| Any time | anyone | `tl2 check` — status as a projection | M | exit 1 informs |
+| Push (consumer) | **git calls pre-push itself** | the battery (tests, golden, health sweeps) | M | **yes** |
+| Release | agent, by release runbook | separation-canary → tag → `push --follow-tags` → re-pin installations | M canary **blocks**; H words the tag | **yes** |
+| Harm observed | anyone | CMP filed (LLM drafts) → operator countersigns purchase → C2 witnesses → C3 row | LLM → H → M | C1: nothing enters without it |
+| Decision needed | agent, by rule 10 | batched package, kind-labeled, ONE question pending | LLM prepares, H rules | work waits only on genuine H items |
+
+```mermaid
+sequenceDiagram
+    participant H as Operator (H)
+    participant A as Agent (LLM)
+    participant M as tl2 / hooks (M)
+    A->>M: tl2 ready
+    M-->>A: queue (complaints, probations, suspects)
+    A->>M: tl2 whisper <paths>
+    M-->>A: guards watching them (tagged by tier)
+    A->>A: edit work
+    A->>M: git commit
+    M-->>A: commit-msg gate (blocks or passes)
+    A->>M: successor capsule, retract --successor, check
+    M-->>A: check green
+    A->>H: decision package (kinds, one question pending)
+    H-->>A: one word (+ reservations by address)
+    A->>M: git push
+    M-->>A: battery / canary (blocks or passes)
 ```
