@@ -26,6 +26,8 @@ seeded red AND a recorded corpus test of plausible legitimate traffic.
 
 | `scripts/tl2 lint` (intake gate) | client | CMP-004 | 2026-09-01 | 2026-09-01, seeded report refused with all four REDs (marker, limit line, finding block, SC- proposal) | 2026-09-01: a well-formed one-finding proposal accepted; brief generated from the real QB-001 spec. Battle evidence: the effectiveness review's proposer demo yielded seven usable SC decompositions on screens.md. The ruled gating layer stays unbought (measured empty: 107 normative lines, 0 hits); only the report-shape intake gates | 0 | 0 | 2026-12-31 |
 
+| `scripts/tl2 work` + ready's premise filter | client | CMP-018 extension, operator ruling 2026-09-02 | 2026-09-02 | 2026-09-02, acceptance suite `scripts/test-f12-kernel` first seen RED on the pre-change tree (b129df9: 6 of 7 scenarios failed, verbatim in docs/verifications/f12-kernel-shape-2026-09-02.md), GREEN 7/7 after the build; beyond the suite, three seeded faults each caught: a cycling retraction successor chain → item HELD naming the premise (`retraction successor chain cycles`); closing an unknown item → refused, exit 2; double close → refused, exit 2 | 2026-09-02, two runs: the real installation with no work store → `ready` output unchanged (same complaint rows, exit 0, no work rows invented); legitimate fixture traffic (four items over healthy premises, one with no premises, one file→done lifecycle) → three ready rows, zero false HELDs, the closed item absent. Advisory: never blocks; "red" means "HELD when a premise is broken, ready when it is not" | 0 | 0 | 2026-12-31 |
+
 Counting rules:
 
 - A catch is a rejected message that was genuinely Polish; a false

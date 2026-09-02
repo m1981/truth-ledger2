@@ -395,6 +395,13 @@ v1 *designed* a session digest and never shipped it — delivery
 documented is not delivery. Known trap: the beads-seam precedence
 (filing one native issue silently deposes the `bd ready` default).
 
+**First kernel instance built (2026-09-02, CMP-018 extension by
+operator ruling):** `tl2 work` + the premise-validity filter inside
+`ready` — premise-at-birth capsule links, fail-closed `HELD <wk-id>
+broken premises:` with successor substitution; deferred: harness
+delivery, external-tracker adapters, acceptance oracles, cost columns
+(shape record: docs/verifications/f12-kernel-shape-2026-09-02.md).
+
 ## F-13 — Budget sense
 
 **Origin: operator ruling, 2026-09-01** (same taxonomy). Anchored

@@ -1,13 +1,33 @@
 #!/usr/bin/env python3
 """tl2 — the engine's CLI. Verbs: capsule, check, vacuity, whisper,
-retract, mirror, ready, verify, lint.
+retract, mirror, ready, work, verify, lint.
 
 tier: client (ships to installations)
 Bought by: CMP-002 (capsule/check), CMP-006 (vacuity), CMP-011
 (whisper), CMP-017 (retract), CMP-005 (mirror), CMP-018 (ready),
 CMP-007 (verify), CMP-009 (criticality tiers inside whisper/ready),
-CMP-020 (mirror citation scope), CMP-004 (lint, proposer only).
+CMP-020 (mirror citation scope), CMP-004 (lint, proposer only),
+CMP-018 extension by operator ruling 2026-09-02 (work + the premise
+filter inside ready).
 Metric rows: docs/governance/gate-metrics.md.
+
+work + the premise filter (F-12 kernel, CMP-018 extension, operator
+ruling 2026-09-02; shape record:
+docs/verifications/f12-kernel-shape-2026-09-02.md): a work item names
+its PREMISES — capsule ids, the facts this engine already pins.
+`work "<title>" --premises <cap-id>...` files an item into
+`work.jsonl` (append-only, decoupled from the fact log); `work --done
+<wk-id>` closes it with a tombstone record. `ready` applies the
+premise-validity filter — one pure function over (item, premises)
+uniform over any item source: every premise resolving to an OK
+capsule => the item is listed ready; a premise SUSPECT, STALE,
+unknown, or retracted without successor => `HELD <wk-id> broken
+premises: ...`, fail-closed, premises named. A premise retracted WITH
+a successor is substituted transitively (the successor is the same
+sentence re-anchored, per the maintenance loop) with a cycle guard.
+tl2 is the premise-validity filter, never the tracker: validation
+lives in the filter, not at filing, and READY/HELD is a read-time
+projection, never stored (architecture section 2).
 
 lint (first F-1 instance, bought by CMP-004 — a spec sentence that no
 test could fail seeded zero rows silently): the PROPOSER only. The
@@ -102,6 +122,7 @@ import sys
 from datetime import datetime, timezone
 
 STORE = "capsules.jsonl"
+WORK_STORE = "work.jsonl"
 
 
 def run(cmd):
@@ -368,6 +389,79 @@ def cmd_mirror(args):
     return worst
 
 
+def cmd_work(args):
+    records = load_records(args.work_store)
+    items = {r["id"] for r in records if r.get("kind") == "work"}
+    closed = {r.get("closes") for r in records
+              if r.get("kind") == "work-done"}
+    if args.done:
+        if args.title:
+            sys.stderr.write("tl2: work takes a title OR --done, "
+                             "not both\n")
+            return 2
+        if args.done not in items:
+            sys.stderr.write("tl2: no work item %s in %s\n"
+                             % (args.done, args.work_store))
+            return 2
+        if args.done in closed:
+            sys.stderr.write("tl2: %s is already closed\n" % args.done)
+            return 2
+        rec = {
+            "kind": "work-done",
+            "closes": args.done,
+            "ts": datetime.now(timezone.utc).strftime(
+                "%Y-%m-%dT%H:%M:%SZ"),
+        }
+        with open(args.work_store, "a") as fh:
+            fh.write(json.dumps(rec, sort_keys=True) + "\n")
+        print("closed %s" % args.done)
+        return 0
+    if not args.title:
+        sys.stderr.write("tl2: work needs a title (to file) or "
+                         "--done <wk-id> (to close)\n")
+        return 2
+    rec = {
+        "kind": "work",
+        "title": args.title,
+        "premises": args.premises or [],
+        "ts": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+    }
+    rec["id"] = "wk-" + sha256(json.dumps(rec, sort_keys=True))[:8]
+    with open(args.work_store, "a") as fh:
+        fh.write(json.dumps(rec, sort_keys=True) + "\n")
+    print("filed %s — %s (%d premise(s); validity is ready's "
+          "read-time projection, not a filing check)"
+          % (rec["id"], rec["title"], len(rec["premises"])))
+    return 0
+
+
+def resolve_premise(pid, capsules, retracted):
+    """Follow retraction successor links from a premise capsule id.
+
+    Returns (final_capsule_id, None) when the chain ends at a live
+    capsule, else (None, why) — the fail-closed cases: unknown id,
+    retracted with no successor, a successor link out of the store,
+    or a cycling chain.
+    """
+    cur, seen = pid, set()
+    while True:
+        if cur in seen:
+            return None, "%s (retraction successor chain cycles)" % pid
+        seen.add(cur)
+        if cur not in capsules:
+            if cur == pid:
+                return None, "%s (unknown)" % pid
+            return None, ("%s (retracted, successor %s unknown)"
+                          % (pid, cur))
+        if cur in retracted:
+            succ = retracted[cur].get("successor")
+            if not succ:
+                return None, "%s (retracted, no successor)" % pid
+            cur = succ
+            continue
+        return cur, None
+
+
 def cmd_ready(args):
     from datetime import date
     today = date.today()
@@ -376,10 +470,12 @@ def cmd_ready(args):
     retracted = retraction_map(records)
     tiers = load_tiers()
     cap_rows = []
+    cap_status = {}
     for rec in records:
         if rec.get("kind") == "retraction" or rec["id"] in retracted:
             continue
         status, why = check_one(rec)
+        cap_status[rec["id"]] = (status, why)
         if status != "OK":
             cls = rec_class(rec, tiers)
             tag = ("[%s] " % cls) if cls != "plain" else ""
@@ -388,6 +484,39 @@ def cmd_ready(args):
                              "re-anchor" % (status, tag, rec["id"],
                                             rec["sentence"])))
     for _, line in sorted(cap_rows, key=lambda t: t[0]):
+        print(line)
+        rows += 1
+    # F-12 kernel (CMP-018 extension): the premise-validity filter.
+    # One pure fold over (item, premises) — uniform over any item
+    # source; work.jsonl is merely the wired one. Fail-closed: a
+    # premise that is not a live OK capsule HOLDS the item, named.
+    wrecords = load_records(args.work_store)
+    capsules = {r["id"] for r in records if "sentence" in r}
+    closed = {r.get("closes") for r in wrecords
+              if r.get("kind") == "work-done"}
+    held_rows, ready_rows = [], []
+    for w in wrecords:
+        if w.get("kind") != "work" or w["id"] in closed:
+            continue
+        broken = []
+        for pid in w.get("premises", []):
+            final, why = resolve_premise(pid, capsules, retracted)
+            if why:
+                broken.append(why)
+                continue
+            status, swhy = cap_status[final]
+            if status != "OK":
+                label = pid if final == pid else "%s -> %s" % (pid,
+                                                               final)
+                broken.append("%s (%s: %s)" % (label, status, swhy))
+        if broken:
+            held_rows.append("work       HELD %s broken premises: "
+                             "%s — %s" % (w["id"], ", ".join(broken),
+                                          w["title"]))
+        else:
+            ready_rows.append("work       ready   %s — %s"
+                              % (w["id"], w["title"]))
+    for line in held_rows + ready_rows:
         print(line)
         rows += 1
     cdir = args.complaints
@@ -597,6 +726,17 @@ def main():
     y.add_argument("--complaints", default="docs/complaints")
     y.add_argument("--metrics", default="docs/governance/gate-metrics.md")
     y.add_argument("--horizon", type=int, default=45)
+    y.add_argument("--work-store", default=WORK_STORE)
+    k = sub.add_parser("work",
+                       help="file a work item with its premise capsules,"
+                            " or close one (--done)")
+    k.add_argument("title", nargs="?")
+    k.add_argument("--premises", nargs="+", metavar="CAP_ID",
+                   help="capsule ids this item stands on; validity is "
+                        "judged by `ready` at read time, fail-closed")
+    k.add_argument("--done", metavar="WK_ID",
+                   help="close a filed item")
+    k.add_argument("--work-store", default=WORK_STORE)
     f = sub.add_parser("verify",
                        help="F-4: brief a fresh verifier / intake its report")
     f.add_argument("--brief", metavar="CAP_ID")
@@ -609,7 +749,8 @@ def main():
     return {"capsule": cmd_capsule, "check": cmd_check,
             "vacuity": cmd_vacuity, "whisper": cmd_whisper,
             "retract": cmd_retract, "mirror": cmd_mirror,
-            "ready": cmd_ready, "verify": cmd_verify,
+            "ready": cmd_ready, "work": cmd_work,
+            "verify": cmd_verify,
             "lint": cmd_lint}[args.verb](args)
 
 

@@ -83,6 +83,19 @@ replace.
 "what now" so no operator turn is spent asking.
 *Implementation:* read-time fold over the complaints dir, the metric
 table's dates, and `check`'s projections; never hand-maintained.
+*Premise filter (CMP-018 extension, operator ruling 2026-09-02; verb
+`work`):* a work item filed with `work` carries premise-at-birth
+links — capsule ids — into `work.jsonl` (append-only, decoupled from
+the fact log); `ready` applies one premise-validity filter, uniform
+over any item source: every premise resolving to an OK capsule lists
+the item ready, while a premise SUSPECT, STALE, unknown, or retracted
+without successor prints `HELD <wk-id> broken premises: ...` —
+fail-closed, premises named; a premise retracted WITH a successor is
+substituted transitively (cycle-guarded), since a successor is the
+same sentence re-anchored. tl2 stays the filter, never the tracker;
+READY/HELD is a projection, never stored. Acceptance:
+`scripts/test-f12-kernel`, witnessed red on the pre-change tree
+(docs/verifications/f12-kernel-shape-2026-09-02.md).
 
 **Commit-msg gate** (CMP-001; `scripts/githooks/commit-msg`,
 engine-dev).

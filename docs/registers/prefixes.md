@@ -15,6 +15,7 @@ somebody's job.
 | `cap-<hex8>` | evidence capsules, `capsules.jsonl` (content-hash ids, per installation) | 2026-08-31 | live |
 | `ret-<hex8>` | capsule retraction tombstones, `capsules.jsonl` (content-hash ids, per installation) | 2026-09-01 | live |
 | `D<n>` / `O<n>` | answer-local row addresses (AGENTS rule 11): session-scoped, expire with the answer, never durable — durable identity is the CMP-/F-/cap- id carried beside them | 2026-09-01 | live |
+| `wk-<hex8>` | work items, `work.jsonl` (content-hash ids, per installation; F-12 kernel, CMP-018 extension) | 2026-09-02 | live |
 
 Rules:
 

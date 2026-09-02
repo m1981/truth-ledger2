@@ -1,0 +1,198 @@
+#!/usr/bin/env python3
+"""test-f12-kernel — executable acceptance for the F-12 kernel: the
+premise-validity filter over work items.
+
+tier: engine-dev (acceptance suite; never installs)
+Authorized by: operator ruling 2026-09-02 (CMP-018 extension); shape
+decision in docs/verifications/f12-kernel-shape-2026-09-02.md.
+
+Defines "useful for our needs" as seven concrete scenarios in a
+scratch git fixture, run against `scripts/tl2` from this checkout:
+
+  S1  item with all premises OK           -> listed ready
+  S2  premise capsule SUSPECT (watched
+      file touched, uncommitted)          -> HELD, premise named
+  S3  premise capsule STALE (re-run
+      hash differs)                       -> HELD, premise named
+  S4  unknown premise id                  -> HELD, fail-closed
+  S5  retracted premise WITH successor    -> successor substituted,
+      (successor OK)                         item ready;
+      retracted WITHOUT successor         -> HELD, premise named
+  S6  item with no premises               -> listed ready
+  S6r regression: complaint and probation
+      rows of `ready` unchanged, exit 0   -> both rows still printed
+
+Vacuity doctrine (constitution C2 as applied to this suite): this
+suite was run against the pre-change tree and seen RED before any
+kernel code existed; the red output is recorded in the shape document.
+Exit 0 iff every scenario passes; stdlib only.
+"""
+import os
+import re
+import subprocess
+import sys
+import tempfile
+import shutil
+
+TL2 = os.path.join(os.path.dirname(os.path.abspath(__file__)), "tl2")
+
+
+def run(args, cwd):
+    return subprocess.run(args, cwd=cwd, capture_output=True, text=True)
+
+
+def tl2(args, cwd):
+    return run([sys.executable, TL2] + args, cwd=cwd)
+
+
+def git(args, cwd):
+    return run(["git"] + args, cwd=cwd)
+
+
+def write(root, rel, text):
+    path = os.path.join(root, rel)
+    os.makedirs(os.path.dirname(path) or root, exist_ok=True)
+    with open(path, "w") as fh:
+        fh.write(text)
+
+
+def file_capsule(cwd, sentence, cmd, watch):
+    r = tl2(["capsule", sentence, "--cmd", cmd, "--watch", watch], cwd)
+    m = re.search(r"filed (cap-[0-9a-f]{8})", r.stdout)
+    if not m:
+        raise SystemExit("fixture broken: capsule not filed: %s%s"
+                         % (r.stdout, r.stderr))
+    return m.group(1)
+
+
+def file_work(cwd, title, premises):
+    args = ["work", title]
+    if premises:
+        args += ["--premises"] + premises
+    r = tl2(args, cwd)
+    m = re.search(r"filed (wk-[0-9a-f]{8})", r.stdout)
+    return m.group(1) if m else None, r
+
+
+def main():
+    root = tempfile.mkdtemp(prefix="tl2-f12-accept-")
+    results = []
+
+    def scenario(name, ok, detail):
+        results.append((name, ok, detail))
+        print("%s %s: %s" % (name, "PASS" if ok else "FAIL", detail))
+
+    try:
+        # --- fixture: a committed scratch repository -------------------
+        git(["init", "-q"], root)
+        git(["config", "user.email", "fixture@test"], root)
+        git(["config", "user.name", "fixture"], root)
+        write(root, "ok.txt", "stable\n")
+        write(root, "suspectme.txt", "stable\n")
+        write(root, "stale-src.txt", "v1\n")
+        write(root, "a.txt", "a\n")
+        write(root, "c.txt", "c\n")
+        write(root, "docs/complaints/CMP-901.md",
+              "# CMP-901 — fixture complaint\n\nDisposition: open\n")
+        write(root, "docs/governance/gate-metrics.md",
+              "| Gate | Tier | Probation |\n|---|---|---|\n"
+              "| `fixture-gate` | client | 2026-01-01 |\n")
+        git(["add", "-A"], root)
+        git(["commit", "-qm", "fixture"], root)
+
+        cap_ok = file_capsule(root, "ok premise", "echo ok", "ok.txt")
+        cap_sus = file_capsule(root, "suspect premise", "echo sus",
+                               "suspectme.txt")
+        cap_stale = file_capsule(root, "stale premise",
+                                 "cat stale-src.txt", "ok.txt")
+        cap_a = file_capsule(root, "retired premise, gen 1", "echo a",
+                             "a.txt")
+        cap_a2 = file_capsule(root, "retired premise, gen 2", "echo a2",
+                              "a.txt")
+        cap_c = file_capsule(root, "wrong premise", "echo c", "c.txt")
+        tl2(["retract", cap_a, "--cause", "re-anchored",
+             "--successor", cap_a2], root)
+        tl2(["retract", cap_c, "--cause", "wrong, no successor"], root)
+
+        # file the work items while every premise is healthy
+        w_filings = [
+            file_work(root, "all premises ok", [cap_ok]),
+            file_work(root, "suspect premise item", [cap_sus]),
+            file_work(root, "stale premise item", [cap_stale]),
+            file_work(root, "unknown premise item", ["cap-deadbeef"]),
+            file_work(root, "successor-substituted item", [cap_a]),
+            file_work(root, "gone premise item", [cap_c]),
+            file_work(root, "no premise item", None),
+        ]
+
+        # now seed the faults: SUSPECT (uncommitted touch of a watched
+        # path) and STALE (evidence command output drifts, watched
+        # paths untouched)
+        with open(os.path.join(root, "suspectme.txt"), "a") as fh:
+            fh.write("touched\n")
+        write(root, "stale-src.txt", "v2\n")
+
+        r = tl2(["ready"], root)
+        out = r.stdout
+
+        def ready_line(title):
+            return re.search(
+                r"^work\s+ready\s+wk-[0-9a-f]{8} — %s$" % re.escape(title),
+                out, re.M)
+
+        def held_line(premise, why):
+            return re.search(
+                r"^work\s+HELD wk-[0-9a-f]{8} broken premises: "
+                r"[^\n]*%s \(%s[^)]*\)" % (re.escape(premise),
+                                           re.escape(why)), out, re.M)
+
+        filed_err = next((f[1].stderr.strip().replace("\n", " ")
+                          for f in w_filings if f[0] is None), "")
+
+        scenario("S1", bool(ready_line("all premises ok")),
+                 "item with all premises OK listed ready"
+                 if ready_line("all premises ok")
+                 else "not listed ready" + (" (filing failed: %s)"
+                                            % filed_err if filed_err
+                                            else ""))
+        scenario("S2", bool(held_line(cap_sus, "SUSPECT")),
+                 "HELD names %s (SUSPECT)" % cap_sus
+                 if held_line(cap_sus, "SUSPECT")
+                 else "no HELD line naming the SUSPECT premise")
+        scenario("S3", bool(held_line(cap_stale, "STALE")),
+                 "HELD names %s (STALE)" % cap_stale
+                 if held_line(cap_stale, "STALE")
+                 else "no HELD line naming the STALE premise")
+        scenario("S4", bool(held_line("cap-deadbeef", "unknown")),
+                 "unknown premise HELD fail-closed"
+                 if held_line("cap-deadbeef", "unknown")
+                 else "unknown premise not HELD fail-closed")
+        s5_ok = (bool(ready_line("successor-substituted item"))
+                 and bool(held_line(cap_c, "retracted")))
+        scenario("S5", s5_ok,
+                 "successor substituted; no-successor premise HELD"
+                 if s5_ok else "retracted-with-successor item not ready,"
+                 " or retracted-no-successor item not HELD")
+        scenario("S6", bool(ready_line("no premise item")),
+                 "no-premise item listed ready"
+                 if ready_line("no premise item")
+                 else "no-premise item not listed ready")
+        s6r_ok = (r.returncode == 0
+                  and "complaint  open    CMP-901" in out
+                  and re.search(r"probation  OVERDUE fixture-gate", out))
+        scenario("S6r", bool(s6r_ok),
+                 "complaint and probation rows unchanged, exit 0"
+                 if s6r_ok else "regression: complaint/probation rows or"
+                 " exit code changed (rc=%d)" % r.returncode)
+
+        failed = sum(1 for _, ok, _ in results if not ok)
+        print("test-f12-kernel: %d passed, %d failed — %s"
+              % (len(results) - failed, failed,
+                 "GREEN" if failed == 0 else "RED"))
+        return 1 if failed else 0
+    finally:
+        shutil.rmtree(root, ignore_errors=True)
+
+
+if __name__ == "__main__":
+    sys.exit(main())
